@@ -1,0 +1,101 @@
+weight_final,strata,psu,interview_year,bmi,bmi_category,overweight_or_obese,any_exercise_last_month,exercise_30day,binge_drinking,max_drinks_30day,sex,age,age_group,race_ethnicity,education_level,income_category,state_fips,diabetes_status,heart_attack_history,coronary_hd_history,stroke_history,depression_history,self_reported_health
+30.85143996460479,231131,2020002992,2020,2712,Overweight,Yes,Yes,Had physical activity,No,5,Male,39,35-39,Multiracial NH,College 4+ years,>50k,Maine,No,No,No,No,No,Good or Better
+2877.4775023935736,221041,2020000712,2020,2746,Overweight,Yes,Yes,Had physical activity,Yes,9,Female,24,18-24,White NH,Grades 9-11,35-50k,Louisiana,No,No,No,No,Yes,Good or Better
+267.6709136882365,542019,2020004673,2020,2585,Overweight,Yes,Yes,Had physical activity,Yes,6,Male,48,45-49,White NH,Grade 12/GED,25-35k,West Virginia,No,No,No,No,No,Good or Better
+1135.9270253005252,512039,2020007280,2020,2510,Overweight,Yes,Yes,Had physical activity,Yes,5,Male,36,35-39,White NH,College 4+ years,>50k,Virginia,No,No,No,No,No,Good or Better
+1840.8521296984475,42019,2020005180,2020,2905,Overweight,Yes,Yes,Had physical activity,Yes,8,Male,40,40-44,Black NH,College 1-3 years,>50k,Arizona,No,No,No,No,No,Good or Better
+83.1134719608573,502109,2020005806,2020,2734,Overweight,Yes,Yes,Had physical activity,Yes,6,Female,35,35-39,Multiracial NH,College 1-3 years,15-25k,Vermont,No,No,No,No,Yes,Good or Better
+821.6532945292921,392099,2020013392,2020,2357,Normal weight,No,Yes,Had physical activity,No,4,Female,58,55-59,White NH,College 1-3 years,>50k,Ohio,No,No,No,No,No,Good or Better
+1366.2934180638324,262109,2020007252,2020,1994,Normal weight,No,Yes,Had physical activity,No,6,Male,30,30-34,Multiracial NH,Grade 12/GED,35-50k,Michigan,No,No,No,No,No,Fair or Poor
+255.9013941407481,292059,2020006765,2020,3399,Obese,Yes,Yes,Had physical activity,Yes,4,Female,66,65-69,White NH,College 4+ years,>50k,Missouri,No,No,No,No,Yes,Good or Better
+224.0811004498583,42069,2020003086,2020,2889,Overweight,Yes,Yes,Had physical activity,Yes,6,Male,71,70-74,White NH,College 4+ years,>50k,Arizona,No,No,No,No,No,Good or Better
+1673.6910387461246,372059,2020003584,2020,3195,Obese,Yes,Yes,Had physical activity,Yes,6,Male,30,30-34,Black NH,Grades 9-11,15-25k,North Carolina,No,No,No,No,No,Good or Better
+1420.1371292773565,132039,2020007695,2020,3081,Obese,Yes,Yes,Had physical activity,No,5,Male,46,45-49,Black NH,College 1-3 years,>50k,Georgia,No,No,No,No,No,Good or Better
+823.115479126722,552029,2020003038,2020,2880,Overweight,Yes,Yes,Had physical activity,No,5,Male,67,65-69,White NH,College 4+ years,>50k,Wisconsin,No,No,Yes,No,No,Good or Better
+541.5596459421143,422049,2020000324,2020,3125,Obese,Yes,Yes,Had physical activity,No,6,Male,52,50-54,Multiracial NH,College 4+ years,>50k,Pennsylvania,Yes,No,No,No,No,Good or Better
+603.0556667632733,532059,2020011972,2020,2726,Overweight,Yes,Yes,Had physical activity,No,6,Male,35,35-39,White NH,College 4+ years,>50k,Washington,No,No,No,No,No,Good or Better
+113.02180758776275,272059,2020015218,2020,3779,Obese,Yes,Yes,Had physical activity,No,4,Female,51,50-54,White NH,College 4+ years,35-50k,Minnesota,No,No,No,No,No,Good or Better
+801.9461055983601,362139,2020007136,2020,2317,Normal weight,No,No,No physical activity,No,3,Female,46,45-49,Hispanic,College 4+ years,>50k,New York,No,No,No,No,No,Good or Better
+56.44089212564325,231101,2020003603,2020,2747,Overweight,Yes,No,No physical activity,No,6,Female,52,50-54,White NH,Grade 12/GED,35-50k,Maine,No,No,No,No,No,Good or Better
+645.3637578582926,92079,2020004628,2020,2663,Overweight,Yes,No,No physical activity,No,4,Female,48,45-49,Black NH,Grade 12/GED,>50k,Connecticut,No,No,No,No,No,Good or Better
+66.77954540998128,92069,2020005702,2020,3007,Obese,Yes,Yes,Had physical activity,No,5,Male,72,70-74,White NH,College 4+ years,>50k,Connecticut,No,No,No,No,No,Good or Better
+365.32806849300835,242019,2020014164,2020,2363,Normal weight,No,Yes,Had physical activity,No,6,Female,28,25-29,White NH,College 4+ years,>50k,Maryland,No,No,No,No,No,Good or Better
+2669.541127249691,512039,2020009202,2020,3255,Obese,Yes,Yes,Had physical activity,Yes,6,Male,49,45-49,White NH,College 1-3 years,>50k,Virginia,No,No,No,No,No,Good or Better
+686.398587967119,422049,2020000371,2020,2179,Normal weight,No,Yes,Had physical activity,No,5,Female,55,55-59,White NH,College 4+ years,>50k,Pennsylvania,No,No,No,No,No,Good or Better
+9.389394615708648,352019,2020003343,2020,1937,Normal weight,No,Yes,Had physical activity,No,4,Female,58,55-59,White NH,College 4+ years,>50k,New Mexico,No,No,No,No,No,Good or Better
+1290.9693899315903,272049,2020010674,2020,2114,Normal weight,No,Yes,Had physical activity,No,4,Female,27,25-29,Other NH,College 1-3 years,>50k,Minnesota,No,No,No,No,No,Good or Better
+212.08818316048155,272059,2020012779,2020,2433,Normal weight,No,Yes,Had physical activity,Yes,6,Male,69,65-69,White NH,Grade 12/GED,15-25k,Minnesota,No,No,No,No,No,Good or Better
+254.1800876283283,252039,2020002754,2020,2819,Overweight,Yes,Yes,Had physical activity,No,5,Female,52,50-54,White NH,College 4+ years,>50k,Massachusetts,No,No,No,No,No,Good or Better
+605.7548589825432,82019,2020006022,2020,3661,Obese,Yes,Yes,Had physical activity,No,4,Female,21,18-24,White NH,Grade 12/GED,35-50k,Colorado,Yes,No,No,No,Yes,Fair or Poor
+205.15645085134824,392029,2020008637,2020,2148,Normal weight,No,Yes,Had physical activity,No,4,Female,39,35-39,White NH,Grade 12/GED,<15k,Ohio,No,No,No,No,Yes,Good or Better
+491.9118002112126,392109,2020013239,2020,2579,Overweight,Yes,No,No physical activity,No,5,Male,56,55-59,Multiracial NH,Grade 12/GED,15-25k,Ohio,No,No,No,No,No,Good or Better
+473.72967588344096,252049,2020006621,2020,3315,Obese,Yes,Yes,Had physical activity,No,7,Male,24,18-24,White NH,College 1-3 years,>50k,Massachusetts,No,No,No,No,No,Good or Better
+176.63897508036075,272059,2020006491,2020,2813,Overweight,Yes,No,No physical activity,No,6,Male,59,55-59,Multiracial NH,Grade 12/GED,35-50k,Minnesota,Yes,No,No,No,No,Fair or Poor
+283.5793611025461,52059,2020003582,2020,1901,Normal weight,No,No,No physical activity,Yes,5,Female,35,35-39,White NH,Grade 12/GED,15-25k,Arkansas,No,No,No,No,No,Good or Better
+235.39776513348562,302039,2020003921,2020,2037,Normal weight,No,Yes,Had physical activity,No,5,Female,35,35-39,White NH,College 1-3 years,>50k,Montana,No,No,No,No,No,Good or Better
+827.3349097957155,252019,2020005156,2020,2292,Normal weight,No,No,No physical activity,Yes,2,Male,35,35-39,Black NH,Grade 12/GED,25-35k,Massachusetts,No,No,No,No,No,Good or Better
+9.010058384087223,312139,2020004855,2020,3391,Obese,Yes,Yes,Had physical activity,No,5,Male,56,55-59,White NH,Grade 12/GED,>50k,Nebraska,No,No,No,No,No,Good or Better
+482.2448631558313,272059,2020012702,2020,2669,Overweight,Yes,Yes,Had physical activity,No,5,Male,23,18-24,White NH,Grade 12/GED,>50k,Minnesota,No,No,No,No,No,Good or Better
+611.8589942703633,342019,2020007782,2020,2923,Overweight,Yes,Yes,Had physical activity,No,4,Female,36,35-39,White NH,College 4+ years,>50k,New Jersey,Yes,No,No,No,Yes,Good or Better
+392.6780049009082,562019,2020003719,2020,3475,Obese,Yes,Yes,Had physical activity,No,5,Female,28,25-29,Hispanic,Grade 12/GED,>50k,Wyoming,No,No,No,No,No,Good or Better
+313.58628687764156,512059,2020006329,2020,2349,Normal weight,No,Yes,Had physical activity,Yes,4,Female,49,45-49,White NH,College 4+ years,>50k,Virginia,No,No,No,No,No,Good or Better
+343.93437478590835,342019,2020008596,2020,2371,Normal weight,No,Yes,Had physical activity,Yes,8,Male,59,55-59,White NH,Grade 12/GED,>50k,New Jersey,No,No,No,No,No,Good or Better
+3169.742595576506,62049,2020002142,2020,2437,Normal weight,No,Yes,Had physical activity,No,10,Male,61,60-64,White NH,Grade 12/GED,35-50k,California,No,No,No,No,Yes,Good or Better
+258.82411394766194,92019,2020004684,2020,2789,Overweight,Yes,Yes,Had physical activity,No,5,Male,28,25-29,Hispanic,College 4+ years,35-50k,Connecticut,No,No,No,No,No,Good or Better
+53.09145966096856,492089,2020010782,2020,3119,Obese,Yes,No,No physical activity,No,8,Male,60,60-64,White NH,College 4+ years,>50k,Utah,No,Yes,No,No,No,Good or Better
+273.93726837007875,362129,2020012109,2020,3125,Obese,Yes,Yes,Had physical activity,No,6,Male,54,50-54,Other NH,Grade 12/GED,<15k,New York,Yes,No,No,No,No,Good or Better
+284.5653832645359,562019,2020004477,2020,3852,Obese,Yes,Yes,Had physical activity,No,10,Male,25,25-29,White NH,College 1-3 years,>50k,Wyoming,No,No,No,No,No,Good or Better
+412.1075133102864,192019,2020007899,2020,3396,Obese,Yes,Yes,Had physical activity,Yes,6,Male,48,45-49,White NH,College 1-3 years,>50k,Iowa,No,No,No,No,No,Fair or Poor
+1040.2754597060132,482169,2020000996,2020,2580,Overweight,Yes,No,No physical activity,No,5,Male,27,25-29,Hispanic,College 4+ years,>50k,Texas,No,No,No,No,No,Good or Better
+102.48938073986417,491051,2020000443,2020,2296,Normal weight,No,Yes,Had physical activity,No,9,Male,53,50-54,White NH,College 1-3 years,<15k,Utah,No,No,No,No,Yes,Fair or Poor
+538.5461432226009,92039,2020008657,2020,3041,Obese,Yes,Yes,Had physical activity,No,6,Female,30,30-34,Hispanic,Grade 12/GED,35-50k,Connecticut,Pre-diabetes,No,No,No,Yes,Good or Better
+120.362532965673,332029,2020004467,2020,2195,Normal weight,No,Yes,Had physical activity,No,6,Female,33,30-34,White NH,College 1-3 years,>50k,New Hampshire,No,No,No,No,No,Good or Better
+1227.5284432595133,512049,2020004500,2020,2231,Normal weight,No,Yes,Had physical activity,No,4,Female,38,35-39,Hispanic,Grade 12/GED,15-25k,Virginia,No,No,No,No,No,Good or Better
+194.89118337729892,202079,2020009251,2020,5098,Obese,Yes,Yes,Had physical activity,No,4,Female,26,25-29,White NH,Grade 12/GED,15-25k,Kansas,No,No,No,No,Yes,Good or Better
+1263.5631401358262,362049,2020014274,2020,2687,Overweight,Yes,Yes,Had physical activity,No,6,Male,30,30-34,White NH,College 4+ years,>50k,New York,No,No,No,No,No,Good or Better
+816.1522399828449,532039,2020012437,2020,2309,Normal weight,No,Yes,Had physical activity,No,5,Male,30,30-34,White NH,College 1-3 years,>50k,Washington,No,No,No,No,No,Good or Better
+802.1014351792093,392019,2020009815,2020,2746,Overweight,Yes,Yes,Had physical activity,Yes,4,Female,43,40-44,White NH,College 1-3 years,>50k,Ohio,No,No,No,No,No,Good or Better
+588.4862933544364,512139,2020008635,2020,2903,Overweight,Yes,Yes,Had physical activity,No,7,Male,65,65-69,White NH,College 1-3 years,>50k,Virginia,No,No,No,No,No,Good or Better
+61.601102938174606,232079,2020007219,2020,3101,Obese,Yes,Yes,Had physical activity,Yes,7,Male,44,40-44,White NH,Grade 12/GED,35-50k,Maine,No,No,No,No,No,Good or Better
+2597.602265498242,422089,2020002416,2020,3444,Obese,Yes,Yes,Had physical activity,Yes,7,Male,55,55-59,White NH,Grade 12/GED,>50k,Pennsylvania,No,No,No,No,No,Good or Better
+217.90643745845642,492039,2020003963,2020,2779,Overweight,Yes,Yes,Had physical activity,No,4,Female,40,40-44,White NH,College 1-3 years,25-35k,Utah,No,No,No,No,Yes,Good or Better
+416.8912276602181,222069,2020002971,2020,2976,Overweight,Yes,Yes,Had physical activity,Yes,6,Female,50,50-54,White NH,College 4+ years,>50k,Louisiana,No,No,No,No,No,Good or Better
+3347.1264858530167,251091,2020000500,2020,2918,Overweight,Yes,No,No physical activity,No,4,Female,72,70-74,White NH,Grade 12/GED,15-25k,Massachusetts,No,No,No,No,No,Good or Better
+35.17359540012347,272029,2020006892,2020,4060,Obese,Yes,Yes,Had physical activity,No,6,Male,73,70-74,White NH,College 4+ years,35-50k,Minnesota,No,No,No,No,Yes,Good or Better
+270.0371968860381,191041,2020000760,2020,2577,Overweight,Yes,Yes,Had physical activity,No,6,Male,52,50-54,White NH,Grade 12/GED,>50k,Iowa,No,No,No,No,No,Good or Better
+2049.415956854993,362129,2020009789,2020,3345,Obese,Yes,Yes,Had physical activity,Yes,5,Female,38,35-39,White NH,College 1-3 years,>50k,New York,No,No,No,No,No,Good or Better
+414.9685234245997,192019,2020006159,2020,2813,Overweight,Yes,Yes,Had physical activity,No,6,Male,45,45-49,White NH,College 1-3 years,>50k,Iowa,No,No,No,No,No,Good or Better
+1757.7277324413815,322019,2020000009,2020,2197,Normal weight,No,Yes,Had physical activity,Yes,12,Male,42,40-44,Other NH,Grade 12/GED,15-25k,Nevada,No,No,No,No,No,Good or Better
+2044.783041834037,372069,2020005727,2020,2828,Overweight,Yes,Yes,Had physical activity,Yes,4,Female,38,35-39,White NH,College 4+ years,>50k,North Carolina,No,No,No,No,No,Good or Better
+58.006694414523274,501111,2020002478,2020,3364,Obese,Yes,Yes,Had physical activity,No,4,Female,59,55-59,White NH,College 1-3 years,35-50k,Vermont,No,No,No,No,No,Good or Better
+226.4085204524941,342019,2020006831,2020,2306,Normal weight,No,Yes,Had physical activity,No,4,Male,59,55-59,White NH,Grade 12/GED,35-50k,New Jersey,No,No,No,No,No,Good or Better
+333.3330274901567,82059,2020008024,2020,2296,Normal weight,No,Yes,Had physical activity,No,5,Male,66,65-69,White NH,College 1-3 years,25-35k,Colorado,No,No,No,No,No,Good or Better
+7224.345420951041,122369,2020006581,2020,3298,Obese,Yes,No,No physical activity,Yes,8,Male,48,45-49,White NH,Grades 9-11,15-25k,Florida,No,No,No,No,No,Good or Better
+291.2744364419395,272049,2020013106,2020,3132,Obese,Yes,Yes,Had physical activity,No,6,Male,45,45-49,Hispanic,College 4+ years,>50k,Minnesota,No,No,No,No,No,Good or Better
+328.8949537227332,202099,2020010339,2020,2905,Overweight,Yes,Yes,Had physical activity,Yes,6,Female,26,25-29,White NH,College 4+ years,>50k,Kansas,No,No,No,No,No,Good or Better
+1155.3264294498038,262049,2020003543,2020,4045,Obese,Yes,Yes,Had physical activity,No,7,Male,39,35-39,White NH,College 4+ years,>50k,Michigan,No,No,No,No,No,Good or Better
+2718.468059973505,552069,2020003119,2020,2657,Overweight,Yes,Yes,Had physical activity,No,6,Female,20,18-24,White NH,College 1-3 years,>50k,Wisconsin,No,No,No,No,No,Good or Better
+63.20829466649501,301031,2020001988,2020,2737,Overweight,Yes,Yes,Had physical activity,No,4,Female,49,45-49,White NH,College 4+ years,>50k,Montana,No,No,No,No,No,Good or Better
+58.718312162730385,162029,2020001324,2020,2918,Overweight,Yes,No,No physical activity,No,2,Female,80,80 or older,White NH,College 1-3 years,25-35k,Idaho,No,No,No,Yes,No,Fair or Poor
+594.2141535201317,412019,2020002370,2020,2190,Normal weight,No,Yes,Had physical activity,No,4,Female,39,35-39,White NH,College 4+ years,>50k,Oregon,No,No,No,No,No,Good or Better
+544.889707946612,242029,2020008200,2020,3295,Obese,Yes,Yes,Had physical activity,No,5,Female,27,25-29,White NH,College 1-3 years,>50k,Maryland,No,No,No,No,No,Good or Better
+115.61743217826402,232099,2020010611,2020,2375,Normal weight,No,Yes,Had physical activity,Yes,5,Male,31,30-34,White NH,College 4+ years,25-35k,Maine,No,No,No,No,Yes,Good or Better
+1221.6746919270659,222069,2020001446,2020,2577,Overweight,Yes,Yes,Had physical activity,No,12,Male,29,25-29,White NH,College 4+ years,>50k,Louisiana,No,No,No,No,No,Good or Better
+31.559197060505234,302019,2020002403,2020,2829,Overweight,Yes,Yes,Had physical activity,Yes,4,Female,56,55-59,White NH,College 4+ years,>50k,Montana,No,No,No,No,No,Good or Better
+895.811753192354,512049,2020005061,2020,2632,Overweight,Yes,Yes,Had physical activity,No,8,Male,34,30-34,Hispanic,Grade 12/GED,25-35k,Virginia,No,No,No,No,No,Good or Better
+299.64378112895963,192079,2020007151,2020,2905,Overweight,Yes,Yes,Had physical activity,Yes,5,Female,38,35-39,White NH,College 1-3 years,>50k,Iowa,No,No,No,No,No,Good or Better
+213.06027599394005,402019,2020002669,2020,2744,Overweight,Yes,No,No physical activity,Yes,4,Female,49,45-49,Black NH,College 1-3 years,15-25k,Oklahoma,No,No,No,No,No,Good or Better
+92.22356936889007,302049,2020005821,2020,2577,Overweight,Yes,Yes,Had physical activity,Yes,6,Male,49,45-49,White NH,College 4+ years,>50k,Montana,No,No,No,No,No,Good or Better
+480.4742124267633,362039,2020011826,2020,2960,Overweight,Yes,Yes,Had physical activity,No,3,Female,36,35-39,White NH,College 1-3 years,>50k,New York,No,No,No,No,No,Good or Better
+2463.405237605931,482109,2020000615,2020,2271,Normal weight,No,Yes,Had physical activity,No,5,Male,32,30-34,White NH,College 1-3 years,>50k,Texas,No,No,No,No,No,Good or Better
+151.4008197419782,272059,2020015301,2020,2905,Overweight,Yes,Yes,Had physical activity,No,5,Female,36,35-39,White NH,College 4+ years,>50k,Minnesota,No,No,No,No,Yes,Good or Better
+310.47814650953535,312039,2020008049,2020,2918,Overweight,Yes,Yes,Had physical activity,Yes,5,Female,43,40-44,White NH,College 4+ years,>50k,Nebraska,No,No,No,No,Yes,Good or Better
+759.5809561991053,82089,2020003756,2020,2584,Overweight,Yes,Yes,Had physical activity,No,8,Male,33,30-34,White NH,College 4+ years,>50k,Colorado,No,No,No,No,No,Good or Better
+568.2134981680937,422079,2020003168,2020,2760,Overweight,Yes,Yes,Had physical activity,No,5,Male,58,55-59,White NH,College 4+ years,>50k,Pennsylvania,No,Yes,No,No,No,Good or Better
+119.68056182277144,152019,2020002853,2020,2829,Overweight,Yes,Yes,Had physical activity,Yes,17,Male,39,35-39,Other NH,Grade 12/GED,15-25k,Hawaii,No,No,No,No,No,Good or Better
+184.3271049028758,412019,2020004821,2020,2658,Overweight,Yes,Yes,Had physical activity,Yes,8,Male,49,45-49,White NH,College 4+ years,>50k,Oregon,No,No,No,No,No,Good or Better
+453.6619742950767,452029,2020000194,2020,2995,Overweight,Yes,Yes,Had physical activity,Yes,5,Female,70,70-74,White NH,Grade 12/GED,25-35k,South Carolina,No,No,No,No,No,Good or Better
+284.59140064629736,292109,2020005339,2020,3232,Obese,Yes,Yes,Had physical activity,No,10,Male,55,55-59,White NH,College 4+ years,>50k,Missouri,No,No,No,No,No,Good or Better
+1259.3850409132979,261081,2020001810,2020,2509,Overweight,Yes,Yes,Had physical activity,No,5,Male,59,55-59,White NH,College 4+ years,>50k,Michigan,No,No,No,No,No,Good or Better
+59.424724844486065,302019,2020005511,2020,2375,Normal weight,No,Yes,Had physical activity,No,5,Male,62,60-64,White NH,Grade 12/GED,>50k,Montana,No,No,No,No,No,Good or Better
+366.5503619596984,192019,2020007904,2020,2414,Normal weight,No,Yes,Had physical activity,No,6,Male,42,40-44,White NH,College 4+ years,>50k,Iowa,No,No,No,No,No,Good or Better
