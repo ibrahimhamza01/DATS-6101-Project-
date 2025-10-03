@@ -1,0 +1,218 @@
+_LLCPWT: Final weight assigned to each respondent
+
+_STSTR: Sample Design Stratification Variable
+
+_PSU: Primary Sampling Unit
+
+IYEAR: Interview Year
+
+_BMI5: Body Mass Index
+
+_BMI5CAT: Four-categories of Body Mass Index
+1 = underweight
+2 = normal weight
+3 = overweight
+4 = obese
+
+_RFBMI5:  Adults who have a body mass index greater than 25.00 (Overweight or Obese)
+1 = no
+2 = yes
+9 = don't know
+
+EXERANY2: Participation in any physical activity last month
+1 = yes
+2 = no
+7 = don't know
+9 = refused
+
+_TOTINDA: Exercise during the past 30 days
+1 = had physical activity
+2 = no physical activity
+9 = don't know
+
+DRNK3GE5: Binge drinking
+1 = no
+2 = yes
+9 = don't know
+
+MAXDRNKS: Largest number of drinks past 30 days
+1 - 76 = number of drinks
+77 = don't know
+99 = refused
+
+SEX1: Sex only for year 2018
+1 = male
+2 = female
+3 = don't know
+4 = refused
+
+_SEX: Sex only for years 2019-2023
+1 = male
+2 = female
+
+_AGE80: Age
+18 - 79 = Age values
+80 = 80 or older
+
+_AGEG5YR: Reported age fourteen-level age category
+1 = 18-24
+2 = 25-19
+3 = 30-34
+4 = 35-39
+5 = 40-44
+6 = 45-49
+7 = 50-54
+8 = 55-59
+9 = 60-64
+10 = 65-69
+11 = 70-74
+12 = 75-79
+13 = 80 or older
+14 = don't know
+
+_RACEGR3: Five-level race/ethnicity category only for years 2018-2021 and 2023
+1 = White only, Non-Hispanic
+2 = Black only, Non-Hispanic
+3 = Other race only, Non-Hispanic
+4 = Multiracial, Non-Hispanic
+5 = Hispanic
+9 = Don’t know
+
+_RACEGR4: Five-level race/ethnicity category only for year 2022
+1 = White only, Non-Hispanic
+2 = Black only, Non-Hispanic
+3 = Other race only, Non-Hispanic
+4 = Multiracial, Non-Hispanic
+5 = Hispanic
+9 = Don’t know
+
+EDUCA: Highest grade of school completed
+1 = Never attended school or only kindergarten
+2 = Grades 1 through 8
+3 = Grades 9 through 11
+4 = Grade 12 or GED
+5 = College 1 year to 3 years
+6 = College 4 years or more
+9 = Refused
+
+_INCOMG: Income categories only for years 2018-2020
+1 = less than 15,000
+2 = 15,000-25,000
+3 = 25,000-35,000
+4 = 35,000-50,000
+5 = more than 50,000
+9 = don't know
+
+_INCOMG1: Income categories only for years 2021-2023
+1 = less than 15,000
+2 = 15,000-25,000
+3 = 25,000-35,000
+4 = 35,000-50,000
+5,6,7 = more than 50,000
+9 = don't know
+
+_STATE: State FIPS Code
+1 = Alabama
+2 = Alaska
+4 = Arizona
+5 = Arkansas
+6 = California
+8 = Colorado
+9 = Connecticut
+10 = Delaware
+11 = District of Columbia
+12 = Florida
+13 = Georgia
+15 = Hawaii
+16 = Idaho
+17 = Illinois
+18 = Indiana
+19 = Iowa
+20 = Kansas
+21 = Kentucky
+22 = Louisiana
+23 = Maine
+24 = Maryland
+25 = Massachusetts
+26 = Michigan
+27 = Minnesota
+28 = Mississippi
+29 = Missouri
+30 = Montana
+31 = Nebraska
+32 = Nevada
+33 = New Hampshire
+34 = New Jersey
+35 = New Mexico
+36 = New York
+37 = North Carolina
+38 = North Dakota
+39 = Ohio
+40 = Oklahoma
+41 = Oregon
+42 = Pennsylvania
+44 = Rhode Island
+45 = South Carolina
+46 = South Dakota
+47 = Tennessee
+48 = Texas
+49 = Utah
+50 = Vermont
+51 = Virginia
+53 = Washington
+54 = West Virginia
+55 = Wisconsin
+56 = Wyoming
+66 = Guam
+72 = Puerto Rico
+
+DIABETE3: Diabetes only for year 2018
+1 = Yes
+2 = Yes, but female told only during pregnancy
+3 = No
+4 = pre-diabetes or borderline diabetes
+7 = Don’t know
+9 = Refused
+
+DIABETE4: Diabetes only for year 2019-2023
+1 = Yes
+2 = Yes, but female told only during pregnancy
+3 = No
+4 = pre-diabetes or borderline diabetes
+7 = Don’t know
+9 = Refused
+
+CVDINFR4: Ever Diagnosed with Heart Attack
+1 = yes
+2 = no
+7 = don't know
+9 = refused
+
+CVDCRHD4: Ever Diagnosed with Coronary Heart Disease
+1 = yes
+2 = no
+7 = don't know
+9 = refused
+
+CVDSTRK3: Ever had a stroke
+1 = yes
+2 = no
+7 = don't know
+9 = refused
+
+ADDEPEV2: Ever had a depressive disorder only for year 2018
+1 = yes
+2 = no
+7 = don't know
+9 = refused
+
+ADDEPEV3: Ever had a depressive disorder only for years 2019-2023
+1 = yes
+2 = no
+7 = don't know
+9 = refused
+
+_RFHLTH: Adults with good or better health
+1 = Good or Better Health
+2 = Fair or Poor Health
+9 = Don’t know
