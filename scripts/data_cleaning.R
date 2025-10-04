@@ -2,6 +2,7 @@ library(haven)
 library(readr)
 library(tidyr)
 library(dplyr)
+library(purrr)
 
 # importing data (mandatory)
 brfss_2018 <- read_xpt("data/raw/LLCP2018.XPT")
@@ -829,3 +830,12 @@ write_csv(brfss_2022_clean_sample, "data/processed/brfss_2022_clean_sample.csv")
 brfss_2023_clean_sample <- brfss_2023_clean %>% slice_sample(n = 100)
 write_csv(brfss_2023_clean_sample, "data/processed/brfss_2023_clean_sample.csv")
 
+# merging all data into one file (optional)
+files <- list.files("data/processed/", pattern = "brfss_20.*_clean.csv", full.names = TRUE)
+brfss_all <- purrr::map_dfr(files, read.csv)
+brfss_all <- brfss_all %>%
+  mutate(
+    bmi = bmi / 100
+  )
+write.csv(brfss_all, "data/processed/brfss_2018_2023.csv", row.names = FALSE)
+summary(brfss_all)
