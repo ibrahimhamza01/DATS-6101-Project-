@@ -32,7 +32,8 @@ brfss_design <- svydesign(
   nest = TRUE
 )
 
-# Calculate weighted prevalence of overweight/obese by year
+#Step 4: Calculate weighted prevalence of overweight/obesity by year
+print(prev_df)
 prev_trends <- svyby(
   ~overweight_or_obese,
   ~interview_year,
