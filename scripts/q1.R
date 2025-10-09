@@ -21,7 +21,8 @@ table(brfss_all$interview_year)
 # Quick check that merge worked
 head(brfss_all)
 
-# Create survey design object
+#Step 3: Define survey design for weighted analysis
+print(summary(brfss_design))
 options(survey.lonely.psu = "adjust")  # Handle single-PSU strata
 brfss_design <- svydesign(
   id = ~psu,
