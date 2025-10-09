@@ -1,4 +1,4 @@
-# Load required libraries
+# Step 1: Setup and Load Required Packages
 library(dplyr)
 library(survey)
 library(ggplot2)
@@ -52,3 +52,4 @@ ggplot(prev_df, aes(x = interview_year, y = prevalence)) +
     x = "Year"
   ) +
   theme_minimal()
+
