@@ -18,6 +18,9 @@ brfss_all <- bind_rows(d1, d2, d3, d4, d5, d6)
 glimpse(brfss_all)
 table(brfss_all$interview_year)
 
+# Quick check that merge worked
+head(brfss_all)
+
 # Create survey design object
 options(survey.lonely.psu = "adjust")  # Handle single-PSU strata
 brfss_design <- svydesign(
