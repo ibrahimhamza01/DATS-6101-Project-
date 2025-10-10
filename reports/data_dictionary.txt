@@ -1,60 +1,60 @@
-_LLCPWT: Final weight assigned to each respondent
+_LLCPWT (weight_final): Final weight assigned to each respondent
 
-_STSTR: Sample Design Stratification Variable
+_STSTR (strata): Sample Design Stratification Variable
 
-_PSU: Primary Sampling Unit
+_PSU (psu): Primary Sampling Unit
 
-IYEAR: Interview Year
+IYEAR (interview_year): Interview Year
 
-_BMI5: Body Mass Index
+_BMI5 (bmi): Body Mass Index
 
-_BMI5CAT: Four-categories of Body Mass Index
+_BMI5CAT (bmi_category): Four-categories of Body Mass Index
 1 = underweight
 2 = normal weight
 3 = overweight
 4 = obese
 
-_RFBMI5:  Adults who have a body mass index greater than 25.00 (Overweight or Obese)
+_RFBMI5 (over_or_obese):  Adults who have a body mass index greater than 25.00 (Overweight or Obese)
 1 = no
 2 = yes
 9 = don't know
 
-EXERANY2: Participation in any physical activity last month
+EXERANY2 (any_exercise_last_month): Participation in any physical activity last month
 1 = yes
 2 = no
 7 = don't know
 9 = refused
 
-_TOTINDA: Exercise during the past 30 days
+_TOTINDA (exercise_30day): Exercise during the past 30 days
 1 = had physical activity
 2 = no physical activity
 9 = don't know
 
-DRNK3GE5: Binge drinking
+DRNK3GE5 (binge_drinking): Binge drinking
 1 = no
 2 = yes
 9 = don't know
 
-MAXDRNKS: Largest number of drinks past 30 days
+MAXDRNKS (max_drinks_30days): Largest number of drinks past 30 days
 1 - 76 = number of drinks
 77 = don't know
 99 = refused
 
-SEX1: Sex only for year 2018
+SEX1 (sex): Sex only for year 2018
 1 = male
 2 = female
 3 = don't know
 4 = refused
 
-_SEX: Sex only for years 2019-2023
+_SEX (sex): Sex only for years 2019-2023
 1 = male
 2 = female
 
-_AGE80: Age
+_AGE80 (age): Age
 18 - 79 = Age values
 80 = 80 or older
 
-_AGEG5YR: Reported age fourteen-level age category
+_AGEG5YR (age_group): Reported age fourteen-level age category
 1 = 18-24
 2 = 25-19
 3 = 30-34
@@ -70,7 +70,7 @@ _AGEG5YR: Reported age fourteen-level age category
 13 = 80 or older
 14 = don't know
 
-_RACEGR3: Five-level race/ethnicity category only for years 2018-2021 and 2023
+_RACEGR3 (race_ethnicity): Five-level race/ethnicity category only for years 2018-2021 and 2023
 1 = White only, Non-Hispanic
 2 = Black only, Non-Hispanic
 3 = Other race only, Non-Hispanic
@@ -78,7 +78,7 @@ _RACEGR3: Five-level race/ethnicity category only for years 2018-2021 and 2023
 5 = Hispanic
 9 = Don’t know
 
-_RACEGR4: Five-level race/ethnicity category only for year 2022
+_RACEGR4 (race_ethnicity): Five-level race/ethnicity category only for year 2022
 1 = White only, Non-Hispanic
 2 = Black only, Non-Hispanic
 3 = Other race only, Non-Hispanic
@@ -86,7 +86,7 @@ _RACEGR4: Five-level race/ethnicity category only for year 2022
 5 = Hispanic
 9 = Don’t know
 
-EDUCA: Highest grade of school completed
+EDUCA (education_level): Highest grade of school completed
 1 = Never attended school or only kindergarten
 2 = Grades 1 through 8
 3 = Grades 9 through 11
@@ -95,7 +95,7 @@ EDUCA: Highest grade of school completed
 6 = College 4 years or more
 9 = Refused
 
-_INCOMG: Income categories only for years 2018-2020
+_INCOMG (income_category): Income categories only for years 2018-2020
 1 = less than 15,000
 2 = 15,000-25,000
 3 = 25,000-35,000
@@ -103,7 +103,7 @@ _INCOMG: Income categories only for years 2018-2020
 5 = more than 50,000
 9 = don't know
 
-_INCOMG1: Income categories only for years 2021-2023
+_INCOMG1 (income_category) : Income categories only for years 2021-2023
 1 = less than 15,000
 2 = 15,000-25,000
 3 = 25,000-35,000
@@ -111,7 +111,7 @@ _INCOMG1: Income categories only for years 2021-2023
 5,6,7 = more than 50,000
 9 = don't know
 
-_STATE: State FIPS Code
+_STATE (state_fips): State FIPS Code
 1 = Alabama
 2 = Alaska
 4 = Arizona
@@ -166,7 +166,7 @@ _STATE: State FIPS Code
 66 = Guam
 72 = Puerto Rico
 
-DIABETE3: Diabetes only for year 2018
+DIABETE3 (diabetes_status): Diabetes only for year 2018
 1 = Yes
 2 = Yes, but female told only during pregnancy
 3 = No
@@ -174,7 +174,7 @@ DIABETE3: Diabetes only for year 2018
 7 = Don’t know
 9 = Refused
 
-DIABETE4: Diabetes only for year 2019-2023
+DIABETE4 (diabetes_status): Diabetes only for year 2019-2023
 1 = Yes
 2 = Yes, but female told only during pregnancy
 3 = No
@@ -182,37 +182,37 @@ DIABETE4: Diabetes only for year 2019-2023
 7 = Don’t know
 9 = Refused
 
-CVDINFR4: Ever Diagnosed with Heart Attack
+CVDINFR4 (heart_attack_history): Ever Diagnosed with Heart Attack
 1 = yes
 2 = no
 7 = don't know
 9 = refused
 
-CVDCRHD4: Ever Diagnosed with Coronary Heart Disease
+CVDCRHD4 (coronary_hd_history): Ever Diagnosed with Coronary Heart Disease
 1 = yes
 2 = no
 7 = don't know
 9 = refused
 
-CVDSTRK3: Ever had a stroke
+CVDSTRK3 (stroke_history): Ever had a stroke
 1 = yes
 2 = no
 7 = don't know
 9 = refused
 
-ADDEPEV2: Ever had a depressive disorder only for year 2018
+ADDEPEV2 (depression_history): Ever had a depressive disorder only for year 2018
 1 = yes
 2 = no
 7 = don't know
 9 = refused
 
-ADDEPEV3: Ever had a depressive disorder only for years 2019-2023
+ADDEPEV3 (depression_history): Ever had a depressive disorder only for years 2019-2023
 1 = yes
 2 = no
 7 = don't know
 9 = refused
 
-_RFHLTH: Adults with good or better health
+_RFHLTH (self_reported_health): Adults with good or better health
 1 = Good or Better Health
 2 = Fair or Poor Health
 9 = Don’t know
