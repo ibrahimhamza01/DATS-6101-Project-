@@ -101,3 +101,11 @@ ggplot(chronic_long, aes(x = Condition, y = Prevalence, fill = Obesity_Status)) 
   ) +
   theme_minimal()
 
+# Step 8: Save weighted prevalence table to CSV
+
+if(!dir.exists("outputs")){
+  dir.create("outputs")
+}
+
+# Save the chronic_by_obese table
+write.csv(chronic_by_obese, "outputs/chronic_by_obese.csv", row.names = FALSE)
