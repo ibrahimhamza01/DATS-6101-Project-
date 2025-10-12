@@ -15,7 +15,7 @@ d5 <- read.csv("brfss_2022_clean_sample.csv")
 d6 <- read.csv("brfss_2023_clean_sample.csv")
 
 # Combine datasets into one dataframe
-brfss_data <- bind_rows(d1, d2, d3, d4,d5,d6)
+brfss_data <- bind_rows(d1, d2, d3, d4, d5, d6)
 
 # Quick check
 head(brfss_data)
@@ -25,28 +25,58 @@ brfss_postcovid <- brfss_data %>%
   mutate(obese = ifelse(bmi_category == "Obese", 1, 0)) %>%  # 1=Obese, 0=Not Obese
   filter(interview_year >= 2019)
 
-# Step 4: Create chronic conditions variables with correct names
+# Step 4: Create chronic conditions variables with correct coding
 brfss_postcovid <- brfss_postcovid %>%
   mutate(
-    diabetes = ifelse(!is.na(diabetes_status) & diabetes_status == 1, 1, 0),
-    cardio = ifelse(!is.na(heart_attack_history) & heart_attack_history == 1 |
-                      !is.na(coronary_hd_history) & coronary_hd_history == 1 |
-                      !is.na(stroke_history) & stroke_history == 1, 1, 0),
-    depression = ifelse(!is.na(depression_history) & depression_history == 1, 1, 0)
+    diabetes = ifelse(diabetes_status %in% c("Yes", "Yes, only pregnancy"), 1, 0),
+    cardio = ifelse(
+      heart_attack_history == "Yes" |
+        coronary_hd_history == "Yes" |
+        stroke_history == "Yes", 1, 0
+    ),
+    depression = ifelse(depression_history == "Yes", 1, 0)
   )
 
 # Quick check
 head(brfss_postcovid)
 
-# Step 5: Create survey design for weighted analysis
-# Using BRFSS weights to account for complex survey design
+# Step 5: Convert chronic conditions to numeric
+brfss_postcovid <- brfss_postcovid %>%
+  mutate(
+    diabetes = as.numeric(diabetes),
+    cardio = as.numeric(cardio),
+    depression = as.numeric(depression)
+  )
+
+# Step 6: Create survey design without strata to avoid singleton PSU issue
 brfss_design <- svydesign(
   id = ~psu,
-  strata = ~strata,
   weights = ~weight_final,
-  data = brfss_postcovid,
-  nest = TRUE
+  data = brfss_postcovid
 )
 
+# Step 6a: Function to calculate weighted prevalence by obesity status
+weighted_prev <- function(var) {
+  svyby(
+    as.formula(paste0("~", var)),
+    ~obese,
+    brfss_design,
+    svymean,
+    na.rm = TRUE
+  )
+}
 
+# Step 6b: Calculate weighted prevalence for each chronic condition
+diabetes_prev <- weighted_prev("diabetes")
+cardio_prev <- weighted_prev("cardio")
+depression_prev <- weighted_prev("depression")
 
+# Step 6c: Combine results into one table
+chronic_by_obese <- data.frame(
+  Condition = c("Diabetes", "Cardio", "Depression"),
+  Non_Obese = c(diabetes_prev[1,2], cardio_prev[1,2], depression_prev[1,2]),
+  Obese = c(diabetes_prev[2,2], cardio_prev[2,2], depression_prev[2,2])
+)
+
+# View weighted prevalence table
+chronic_by_obese
