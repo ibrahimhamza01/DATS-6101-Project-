@@ -1,6 +1,4 @@
-# ================================
 # Q1: Obesity Prevalence Analysis
-# ================================
 
 # Step 1: Load required libraries
 library(dplyr)
@@ -70,3 +68,4 @@ print(prev_plot)
 
 # Save the plot as PNG
 ggsave("outputs/overweight_trend.png", plot = prev_plot, width = 7, height = 5)
+
