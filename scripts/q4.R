@@ -80,3 +80,24 @@ chronic_by_obese <- data.frame(
 
 # View weighted prevalence table
 chronic_by_obese
+
+# Step 7: Visualize weighted prevalence
+library(ggplot2)
+library(tidyr)
+
+# Reshape chronic_by_obese for plotting
+chronic_long <- chronic_by_obese %>%
+  pivot_longer(cols = c("Non_Obese", "Obese"), names_to = "Obesity_Status", values_to = "Prevalence")
+
+# Create bar plot
+ggplot(chronic_long, aes(x = Condition, y = Prevalence, fill = Obesity_Status)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  scale_y_continuous(labels = scales::percent_format(accuracy = 1)) +
+  labs(
+    title = "Weighted Prevalence of Chronic Conditions by Obesity Status",
+    x = "Chronic Condition",
+    y = "Weighted Prevalence (%)",
+    fill = "Obesity Status"
+  ) +
+  theme_minimal()
+
