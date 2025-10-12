@@ -17,3 +17,8 @@ brfss_data <- bind_rows(d1, d2, d3, d4,d5,d6)
 
 # Quick check
 head(brfss_data)
+
+# Step 3: Create obesity variable and filter post-COVID period
+brfss_postcovid <- brfss_data %>%
+  mutate(obese = ifelse(bmi_category == "Obese", 1, 0)) %>%  # 1=Obese, 0=Not Obese
+  filter(interview_year >= 2019)
