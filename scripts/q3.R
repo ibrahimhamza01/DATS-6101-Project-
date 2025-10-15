@@ -45,6 +45,7 @@ summary(post_covid)
 post_covid_design <- svydesign(
   id = ~psu,
   weights = ~weight_final,
+  strata = ~strata,
   data = post_covid
 )
 
@@ -97,6 +98,7 @@ summary(pre_covid)
 # Create Pre-Covid Survey Design
 pre_covid_design <- svydesign(
   id = ~psu,
+  strata = ~strata,
   weights = ~weight_final,
   data = pre_covid
 )
@@ -148,4 +150,5 @@ ggplot(data = education_pre_table, mapping = aes (x = education_level, y = Freq,
 ##}
 
 ##write.csv(chronic_by_obese, "outputs/chronic_by_obese.csv", row.names = FALSE)
+
 
