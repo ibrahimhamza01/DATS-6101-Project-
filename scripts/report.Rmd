@@ -1,0 +1,390 @@
+---
+title: "DATS 6101 Project 1"
+author: "Syed Ibrahim Hamza, "
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    toc: true
+    toc_float:
+      collapsed: true
+      smooth_scroll: true
+    number_sections: true
+    theme: united
+    code_folding: hide
+---
+
+
+```{css, echo=FALSE}
+/* Font adjustments */
+body { font-size: 14px; line-height: 1.5; }
+h1 { font-size: 26px; }
+h2 { font-size: 20px; }
+h3 { font-size: 18px; }
+.tocify-content { font-size: 14px !important; }
+```
+
+```{r setup, message=FALSE, warning=FALSE, echo=FALSE}
+library(dplyr)
+library(ggplot2)
+library(janitor)
+library(gridExtra)
+library(grid)
+library(tidyr)
+library(scales)
+library(ezids)
+library(knitr)
+brfss = readRDS("../data/processed/brfss_2018_2023.rds")
+```
+
+# Introduction
+
+## Project Overview
+This project examines the **impact of COVID-19 on obesity and lifestyle behaviors** among U.S. adults using the **CDC Behavioral Risk Factor Surveillance System (BRFSS)** data from **2018–2023**.  
+The BRFSS is a nationally representative health survey that collects information on demographics, chronic health conditions, and behavioral risk factors from approximately **400,000 adults annually** across all 50 states, Washington D.C., and U.S. territories.  
+Our primary goal is to evaluate how obesity prevalence and lifestyle behaviors such as physical activity and alcohol use have changed before and after the onset of COVID-19, and how these trends vary by demographic and health factors.
+
+
+## Data Sources
+- **Raw data**: stored in `data/raw/`, obtained from the [CDC BRFSS Annual Data Portal](https://www.cdc.gov/brfss/annual_data/annual_data.htm).  
+- **Processed data**: cleaned and merged dataset saved in `data/processed/`.  
+- **Final analytical dataset**: `data/processed/brfss_2018_2023.rds` (over 100k observations, ~24 variables).  
+
+Here is a glimpse of how the data appeared previously.
+```{r}
+library(readr)
+before <- read.csv("../data/raw/brfss_2018_sample.csv", stringsAsFactors = FALSE)
+before[1:5, 1:9]
+```
+
+# Data Preparation
+
+## Overview
+Here is a glimpse of processed data.
+```{r}
+library(readr)
+after <- read.csv("../data/processed/brfss_2018_clean_sample.csv", stringsAsFactors = FALSE)
+after[1:5, 1:6]
+```
+<br>
+<br>
+The data preparation process involved two main stages implemented in custom R scripts:
+
+## From `data_cleaning.R`
+- Performs initial filtering, variable selection, and calculation of derived variables (e.g., BMI).  
+- Imported annual BRFSS files (2018–2023) and selected relevant variables for BMI, physical activity, alcohol use, and chronic conditions.  
+- Computed **BMI** using self-reported height and weight and categorized individuals into *Underweight, Normal weight, Overweight,* and *Obese*.  
+- Created binary indicators:
+  - `overweight_or_obese` (BMI ≥ 25)
+  - `any_exercise_last_month` and `exercise_30day` (physical activity engagement)
+  - `binge_drinking` (based on reported alcohol consumption)  
+- Filtered out records with implausible BMI values and missing key demographics.  
+- Appended all years into a single longitudinal dataset (`brfss_2018_2023.csv`).  
+
+## From `apply_factors.R`
+- Converts categorical variables to descriptive factor labels and ensures consistent metadata for survey analysis.
+- Implemented a **`safe_factor()`** helper function to standardize categorical variables that may be stored as numeric codes or text.  
+- Applied consistent factor mappings for:
+  - **Demographics:** sex, age group, race/ethnicity, education, income, and state (using FIPS codes).  
+  - **Lifestyle behaviors:** physical activity and alcohol use indicators.  
+  - **Health outcomes:** diabetes, heart disease, stroke, depression, and self-reported health status.  
+- Preserved factor orderings for ordinal variables (e.g., income, education).  
+- Saved the final dataset as an RDS file with factor attributes intact (`brfss_2018_2023.rds`).
+
+# Question#1
+- Description of Q1
+- Summary statistics
+- Visualizations
+- Findings and interpretation
+- Associated scripts: `scripts/03_q1_pop_trends.R`
+
+
+# Question#2
+
+
+## Description
+This analysis explores the relationship between lifestyle behaviors (exercise and binge drinking) and obesity prevalence among adults using BRFSS data (2018–2023). The goal is to examine trends over time, differences by behavior, and statistical significance.
+<br>
+<br>
+<br>
+
+## Summary Statistics
+```{r, message=FALSE, warning=FALSE}
+# Descriptive tables (overall & by year)
+desc_overall <- data.frame(
+  n = nrow(brfss),
+  mean_bmi = mean(brfss$bmi, na.rm = TRUE),
+  sd_bmi = sd(brfss$bmi, na.rm = TRUE),
+  obesity_n = sum(brfss$overweight_or_obese == "Yes"),
+  obesity_pct = mean(brfss$overweight_or_obese == "Yes")
+)
+knitr::kable(desc_overall, caption = '<span style="font-weight: bold;color: blue;">Overall Descriptive Statistics</span>')
+```
+Across 2018–2023, **134,283 adults** were analyzed with an average **BMI of 28.17 (SD = 5.90)**, indicating an **overweight** population. Overall, **68.8%** were **overweight or obese**, emphasizing the need to explore lifestyle factors like **physical activity** and **binge drinking** in relation to obesity risk.
+
+<br>
+
+```{r, message=FALSE, warning=FALSE}
+desc_by_year <- brfss %>%
+  group_by(interview_year) %>%
+  summarise(
+    n = n(),
+    mean_bmi = mean(bmi, na.rm=TRUE),
+    sd_bmi = sd(bmi, na.rm=TRUE),
+    obesity_n = sum(overweight_or_obese == "Yes"),
+    obesity_pct = mean(overweight_or_obese == "Yes"),
+    exercise_pct = mean(any_exercise_last_month == "Yes"),
+    binge_pct = mean(binge_drinking == "Yes"),
+    .groups = "drop"
+  )
+knitr::kable(desc_by_year, caption = '<span style="font-weight: bold;color: blue;">Descriptive Statistics by Year</span>')
+```
+From **2018 to 2023**, mean BMI and obesity prevalence showed a slight upward trend, with obesity rising from about 68% to 70%. Exercise rates remained high **(82–87%)**, while binge drinking stayed steady around **36–38%**, suggesting limited behavioral change despite increasing obesity levels.
+<br>
+<br>
+<br>
+
+## Visualizations
+```{r, message=FALSE, warning=FALSE}
+obesity_exercise <- brfss %>%
+  group_by(interview_year, any_exercise_last_month) %>%
+  summarise(obesity_prev = mean(overweight_or_obese == "Yes", na.rm = TRUE), .groups = "drop")
+
+p_ex_ob <- ggplot(obesity_exercise, aes(x = factor(interview_year), y = obesity_prev, fill = any_exercise_last_month)) +
+  geom_bar(stat="identity", position="dodge") +
+  scale_y_continuous(labels = percent_format(accuracy=1)) +
+  labs(title = "Obesity Prevalence by Exercise Status (2018–2023)", x = "Year", y = "Obesity %", fill = "Exercise") +
+  theme_minimal(base_size=14)
+
+p_ex_ob
+```
+<br>
+The chart clearly indicates that in every year from 2018 to 2023, the obesity prevalence among adults who reported no physical activity was consistently and significantly higher by about 10 percentage points than among those who did exercise.
+<br>
+<br>
+
+```{r, message=FALSE, warning=FALSE}
+obesity_trend <- brfss %>%
+  group_by(interview_year) %>%
+  summarise(obesity_prev = mean(overweight_or_obese == "Yes"), .groups = "drop")
+
+p_trend <- ggplot(obesity_trend, aes(x = interview_year, y = obesity_prev)) +
+  geom_line(color="darkred", size=1.2) + geom_point(size=3) +
+  scale_y_continuous(labels=percent_format(accuracy=1)) +
+  labs(title="Obesity Prevalence Trend (2018–2023)", x="Year", y="Obesity %") +
+  theme_minimal(base_size=14)
+
+p_trend
+```
+<br>
+The overall obesity prevalence showed a concerning increase between 2018 and 2022, rising from approximately **67.9\%** to a high of **70.2\%**, before slightly stabilizing in 2023. 
+<br>
+<br>
+
+```{r, message=FALSE, warning=FALSE}
+p_bmi_ex <- ggplot(brfss, aes(x = any_exercise_last_month, y = bmi)) +
+  geom_boxplot(fill="lightgreen") +
+  labs(title = "BMI Distribution by Exercise", x = "Exercise (Yes/No)", y = "BMI") +
+  theme_minimal(base_size=14)
+
+p_bmi_ex
+
+```
+<br>
+The box plot shows that, on average, individuals who **do not** exercise have a visibly higher median **BMI** and a broader distribution compared to those who do exercise.
+<br>
+<br>
+<br>
+
+```{r, message=FALSE, warning=FALSE}
+heat_exercise <- brfss %>%
+  group_by(interview_year, any_exercise_last_month) %>%
+  summarise(obesity_prev = mean(overweight_or_obese == "Yes"), .groups="drop")
+
+p_heat_ex <- ggplot(heat_exercise, aes(x=factor(interview_year), y=any_exercise_last_month, fill=obesity_prev)) +
+  geom_tile(color="white") + scale_fill_gradient(low="white", high="red", labels=percent_format(accuracy=1)) +
+  labs(title="Obesity Heatmap: Year × Exercise", x="Year", y="Exercise", fill="Obesity %") +
+  theme_minimal(base_size=14)
+
+p_heat_ex
+```
+<br>
+The heatmap distinctly shows a bimodal distribution of obesity, with the **"No Exercise"** group consistently remaining in the highest obesity bracket *(>75%, dark red)*, while the **"Yes Exercise"** group remains firmly in the lowest bracket *(<70%, light pink)* across all years. 
+<br>
+<br>
+<br>
+
+## Statistical tests
+
+### ANOVA
+
+```{r, message=FALSE, warning=FALSE, echo=FALSE}
+format_for_kable <- function(model, type = c("anova", "tukey"), digits = 3) {
+  type <- match.arg(type)
+  
+  if (type == "anova") {
+    tab <- summary(model)[[1]] %>% as.data.frame()
+    tab <- tab %>%
+      mutate(across(where(is.numeric),
+                    ~ ifelse(abs(.) < 1e-3,
+                             format(., scientific = TRUE, digits = digits),
+                             round(., digits))))
+  } else if (type == "tukey") {
+    tab <- as.data.frame(model)
+    tab <- tab %>%
+      tibble::rownames_to_column(var = "Comparison")
+    tab <- tab %>%
+      mutate(across(where(is.numeric),
+                    ~ ifelse(abs(.) < 1e-3,
+                             format(., scientific = TRUE, digits = digits),
+                             round(., digits))))
+  }
+  return(tab)
+}
+```
+
+```{r, message=FALSE, warning=FALSE}
+anova_exercise <- aov(bmi ~ any_exercise_last_month, data = brfss)
+kable(format_for_kable(anova_exercise, type = "anova"), caption = '<span style="font-weight: bold;color: red;">Anova: BMI vs Exercise</span>')
+```
+<br>
+The ANOVA results show a **significant difference in BMI** based on whether adults engaged in exercise during the last month (**F(1, 134281) = 1983.29, p < 0.001**). This indicates that **BMI varies meaningfully with exercise status**, suggesting that physical activity is strongly associated with body weight in this sample.
+<br>
+
+```{r, message=FALSE, warning=FALSE}
+tukey_exercise <- TukeyHSD(anova_exercise)
+kable(format_for_kable(tukey_exercise$any_exercise_last_month, type = "tukey"), caption = '<span style="font-weight: bold;color: red;">Tukey: BMI vs Exercise</span>')
+```
+<br>
+The Tukey post-hoc test indicates that adults who did **not exercise** in the last month had a **significantly higher BMI** compared to those who did (**diff = 1.997, 95% CI: 1.909–2.085, p < 0.001**).
+<br>
+
+```{r, message=FALSE, warning=FALSE}
+anova_binge <- aov(bmi ~ binge_drinking, data = brfss)
+kable(format_for_kable(anova_binge, type = "anova"), caption = '<span style="font-weight: bold;color: blue;">Anova: BMI vs Binge Drinking</span>')
+```
+<br>
+The ANOVA results show a **significant difference in BMI** based on binge drinking status. This suggests that **BMI varies with binge drinking behavior**, indicating a potential association between alcohol consumption patterns and body weight.
+<br>
+
+```{r, message=FALSE, warning=FALSE}
+tukey_binge <- TukeyHSD(anova_binge)
+kable(format_for_kable(tukey_binge$binge_drinking, type = "tukey"), caption = '<span style="font-weight: bold;color: blue;">Tukey: BMI vs Binge Drinking</span>')
+```
+<br>
+The Tukey post-hoc test shows that adults who **engaged in binge drinking** had a **slightly lower BMI** compared to those who did not. This indicates a **small but statistically significant association** between binge drinking and lower BMI in this sample.
+<br>
+
+```{r, message=FALSE, warning=FALSE}
+anova_year <- aov(bmi ~ factor(interview_year), data = brfss)
+kable(format_for_kable(anova_year, type = "anova"), caption = '<span style="font-weight: bold;color: green;">Anova: BMI vs Overall Years</span>')
+```
+<br>
+The ANOVA results indicate a **significant difference in BMI across survey years**. This suggests that **BMI varied slightly but meaningfully over the 2018–2023 period**.
+<br>
+
+```{r, message=FALSE, warning=FALSE}
+tukey_year <- TukeyHSD(anova_year)
+kable(format_for_kable(tukey_year$'factor(interview_year)', type = "tukey"), caption = '<span style="font-weight: bold;color: green;">Tukey: BMI vs Overall Years</span>')
+```
+<br>
+The Tukey post-hoc test shows that **BMI increased slightly in 2021–2023** compared to 2018 and 2019, with significant differences observed for 2021 vs 2018 (**diff = 0.280, p < 0.001**), 2022 vs 2018 (**diff = 0.298, p < 0.001**), and 2023 vs 2018 (**diff = 0.270, p < 0.001**). No significant differences were found between consecutive later years (2021–2023), indicating that **BMI remained relatively stable in the most recent survey years**.
+<br>
+
+### Chi Square
+```{r, message=FALSE, warning=FALSE, echo=FALSE}
+chisq_summary <- function(chisq_obj) {
+  if (!inherits(chisq_obj, "htest")) {
+    stop("Input must be a chisq.test() object")
+  }
+  chi_summary <- data.frame(
+    Statistic = chisq_obj$statistic,
+    DF = chisq_obj$parameter,
+    P_Value = chisq_obj$p.value
+  )
+  return(chi_summary)
+}
+```
+
+```{r, message=FALSE, warning=FALSE}
+contable = table(brfss$bmi_category, brfss$any_exercise_last_month)
+chitest <- chisq.test(contable)
+kable(chisq_summary(chitest), caption = '<span style="font-weight: bold;color: orange;">Chi-square Test: BMI vs Exercise</span>')
+kable(chitest$stdres, caption = '<span style="font-weight: bold;color: orange;">Standardized Residuals: BMI vs Exercise</span>')
+```
+<br>
+The chi-square test revealed a **highly significant association between BMI category and exercise status** (χ² = 1708.61, df = 3, p < 0.001), indicating that BMI distribution differs between those who exercised and those who did not. The **standardized residuals** show that **normal-weight and overweight adults were more likely to exercise**, while **obese and underweight adults were less likely to do so**. The symmetric residual values reflect the two-category structure of the exercise variable (Yes/No).
+<br>
+
+```{r, message=FALSE, warning=FALSE}
+contable = table(brfss$overweight_or_obese, brfss$binge_drinking)
+chitest <- chisq.test(contable)
+kable(chisq_summary(chitest), caption = '<span style="font-weight: bold;color: Pink;">Chi-square Test: Over Weight vs Binge Drinking</span>')
+kable(chitest$stdres, caption = '<span style="font-weight: bold;color: Pink;">Standardized Residuals: Over Weight vs Binge Drinking</span>')
+```
+<br>
+The chi-square test found **no significant association** between being overweight/obese and binge drinking status (**χ² = 0.14, df = 1, p = 0.709**). This indicates that the **prevalence of overweight or obesity is similar** among those who binge drink and those who do not. The small and symmetric standardized residuals confirm that **observed and expected frequencies are nearly identical**, supporting the lack of relationship between these variables.
+<br>
+
+```{r, message=FALSE, warning=FALSE}
+contable = table(brfss$bmi_category, brfss$interview_year)
+chitest <- chisq.test(contable)
+kable(chisq_summary(chitest), caption = '<span style="font-weight: bold;color: Purple;">Chi-square Test: BMI Category vs Year</span>')
+kable(chitest$stdres, caption = '<span style="font-weight: bold;color: Purple;">Standardized Residuals: BMI Category vs Year</span>')
+```
+<br>
+The chi-square test shows a **significant association between BMI category and survey year** (**χ² = 60.88, df = 15, p < 0.001**), indicating that BMI distributions changed over time from 2018 to 2023. The **standardized residuals** suggest that **normal-weight individuals were more common in earlier years (2018–2019)**, while **obesity became more prevalent in later years (2021–2023)**. This pattern points to a **gradual increase in obesity rates over time** within the survey population.
+<br>
+
+## Conclusion
+
+### Overall Findings
+
+This analysis of BRFSS data from 2018–2023 examined the relationships between **lifestyle behaviors (exercise and binge drinking)** and **body mass index (BMI)/obesity status** among 134,283 adults. The average BMI across all years was **28.17 (SD = 5.90)**, placing the typical respondent in the **overweight range**, with approximately **68.8% classified as overweight or obese**. This underscores the persistent and widespread prevalence of excess body weight in the U.S. adult population.
+
+### Exercise and Obesity
+
+Both the **ANOVA** and **chi-square analyses** demonstrated a **strong and consistent relationship between physical activity and BMI**. Individuals who reported **no exercise** had significantly **higher BMI values** and a **greater likelihood of obesity** compared to those who exercised. The Tukey test confirmed that non-exercisers had an average BMI nearly **2 points higher** than exercisers (p < 0.001). These findings highlight **physical activity as a key behavioral determinant of body weight**.
+
+### Binge Drinking and BMI
+
+The **ANOVA results** indicated a small but statistically significant relationship between **binge drinking and BMI**, with binge drinkers having a **slightly lower BMI** on average. However, the **chi-square test** for overweight/obesity status found **no significant association** (p = 0.709). This suggests that while binge drinking may correlate with small differences in BMI, it is **not a major factor influencing obesity prevalence** in this dataset.
+
+### Temporal Trends (2018–2023)
+
+Across survey years, BMI and obesity rates showed a **modest but significant increase**, particularly from **2018 to 2022**, before stabilizing in 2023. The **Tukey post-hoc tests** confirmed that BMI levels in **2021–2023** were significantly higher than those in **2018–2019**. The **chi-square test** further revealed that **obesity prevalence increased over time**, while **normal-weight classifications declined**, signaling a **gradual shift toward higher BMI categories**.
+
+### Summary and Implications
+
+In summary, the findings demonstrate that **lack of exercise** is strongly linked with **higher BMI and obesity**, whereas **binge drinking shows minimal influence**. The overall upward trend in BMI over time raises **public health concerns** and emphasizes the need for **sustained interventions promoting physical activity and weight management**. Continued surveillance and behavioral health promotion efforts are essential to mitigate obesity-related risks in the adult population.
+
+
+# Question#3
+- Description of Q3
+- Summary statistics
+- Visualizations
+- Findings and interpretation
+- Associated scripts: `scripts/05_q3_equity.R`
+
+# Question#4
+- Description of Q4
+- Summary statistics
+- Visualizations
+- Findings and interpretation
+- Associated scripts: `scripts/06_q4_chronic.R`
+
+# Discussion
+- Cross-cutting insights across Q1–Q4
+- Strengths and limitations
+- Potential additional information
+
+# Conclusion
+- Overall answers to research questions
+- Future work
+
+# References
+- APA style references
+
+# Appendix
+```{r, echo=TRUE}
+# Example: code snippets for reproducibility
+```
