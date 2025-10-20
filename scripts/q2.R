@@ -254,7 +254,7 @@ anova_table <- survey_anova_table(anova_binge, "binge_drinking")
 xkabledply(anova_table, title = "Survey Anova Test: BMI vs Binge drinking")
 
 tukey_fixed <- survey_tukey_table_fixed(anova_binge, "binge_drinking", conf_level = 0.95, digits = 3)
-xkabledply(tukey_fixed, title = "Survey Tukey Test: BMI vs Exercise")
+xkabledply(tukey_fixed, title = "Survey Tukey Test: BMI vs Binge drinking")
 
 # Over the year
 anova_year <- svyglm(bmi ~ interview_year, design = brfss_design)
