@@ -222,21 +222,16 @@ This analysis estimates the weighted prevalence of overweight or obesity among U
 
 ## Summary statistics
 **Steps:** Load libraries → Read data → Define survey design → Compute weighted prevalence
-
-Load required libraries
-
+```{r, message=FALSE, warning=FALSE}
 library(dplyr)
 library(survey)
 library(ggplot2)
 
-Read combined dataset
 brfss_all <- readRDS("C:/Users/namitha/Downloads/brfss_2018_2023.rds")
 
-Inspect dataset
 glimpse(brfss_all)
 table(brfss_all$interview_year)
 
-Define survey design
 options(survey.lonely.psu = "adjust")
 brfss_design <- svydesign(
 id = ~psu,
@@ -255,13 +250,12 @@ svymean,
 na.rm = TRUE
 )
 
-Prepare dataframe
 prev_df <- as.data.frame(prev_trends) %>%
 select(interview_year, overweight_or_obeseYes, se.overweight_or_obeseYes) %>%
 rename(prevalence = overweight_or_obeseYes, se = se.overweight_or_obeseYes)
 
 knitr::kable(prev_df, caption = 'Weighted Prevalence of Overweight/Obesity by Year (2018–2023)')
-
+```
 Across survey years 2018–2023, the weighted analysis shows a steady increase in obesity prevalence among U.S. adults. This upward trend suggests a continuing public health challenge related to overweight and obesity, consistent with national surveillance patterns reported by BRFSS.
 <br>
 <br>
@@ -269,11 +263,9 @@ Across survey years 2018–2023, the weighted analysis shows a steady increase i
 
 
 ## Visualizations
-
-Create outputs folder if not present
+```{r, message=FALSE, warning=FALSE}
 if(!dir.exists("outputs")) dir.create("outputs")
 
-Plot prevalence trend
 prev_plot <- ggplot(prev_df, aes(x = interview_year, y = prevalence)) +
 geom_line(size = 1.2, color = "red") +
 geom_point(size = 3, color = "red") +
@@ -285,9 +277,8 @@ x = "Year"
 theme_minimal(base_size = 14)
 prev_plot
 
-Save the plot
 ggsave("outputs/overweight_trend.png", plot = prev_plot, width = 7, height = 5)
-
+```
 <br> The line chart shows a **gradual increase in the prevalence of overweight or obesity from 2018 to 2023**. The trend highlights that a growing proportion of U.S. adults fall into overweight or obese categories each year, reflecting persistent population-level risk factors related to diet, physical activity, and lifestyle. <br> <br> <br>
 
 ## Conclusion
