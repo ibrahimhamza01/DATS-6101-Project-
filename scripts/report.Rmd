@@ -214,11 +214,89 @@ Descriptive statistics were used to summarize key variables and provide an overa
 Initially, the research question focused broadly on changes in health outcomes over time. After exploratory data analysis, it became clear that patterns within the dataset could inform more specific questions about factors associated with these outcomes. The refined question now emphasizes understanding how key variables relate to the outcomes of interest and whether these relationships vary across time or groups, allowing for a more targeted and data-driven investigation.
 
 # Question#1
-- Description of Q1
-- Summary statistics
-- Visualizations
-- Findings and interpretation
-- Associated scripts: `scripts/03_q1_pop_trends.R`
+
+
+## Description
+This analysis estimates the weighted prevalence of overweight or obesity among U.S. adults (2018–2023) using data from the Behavioral Risk Factor Surveillance System (BRFSS). The study uses a complex survey design to account for weights, strata, and PSUs, providing nationally representative results on obesity trends across six survey years.
+<br>
+
+## Summary statistics
+**Steps:** Load libraries → Read data → Define survey design → Compute weighted prevalence
+
+Load required libraries
+
+library(dplyr)
+library(survey)
+library(ggplot2)
+
+Read combined dataset
+brfss_all <- readRDS("C:/Users/namitha/Downloads/brfss_2018_2023.rds")
+
+Inspect dataset
+glimpse(brfss_all)
+table(brfss_all$interview_year)
+
+Define survey design
+options(survey.lonely.psu = "adjust")
+brfss_design <- svydesign(
+id = ~psu,
+strata = ~strata,
+weights = ~weight_final,
+data = brfss_all,
+nest = TRUE
+)
+
+Calculate weighted prevalence by year
+prev_trends <- svyby(
+~overweight_or_obese,
+~interview_year,
+brfss_design,
+svymean,
+na.rm = TRUE
+)
+
+Prepare dataframe
+prev_df <- as.data.frame(prev_trends) %>%
+select(interview_year, overweight_or_obeseYes, se.overweight_or_obeseYes) %>%
+rename(prevalence = overweight_or_obeseYes, se = se.overweight_or_obeseYes)
+
+knitr::kable(prev_df, caption = 'Weighted Prevalence of Overweight/Obesity by Year (2018–2023)')
+
+Across survey years 2018–2023, the weighted analysis shows a steady increase in obesity prevalence among U.S. adults. This upward trend suggests a continuing public health challenge related to overweight and obesity, consistent with national surveillance patterns reported by BRFSS.
+<br>
+<br>
+<br>
+
+
+## Visualizations
+
+Create outputs folder if not present
+if(!dir.exists("outputs")) dir.create("outputs")
+
+Plot prevalence trend
+prev_plot <- ggplot(prev_df, aes(x = interview_year, y = prevalence)) +
+geom_line(size = 1.2, color = "red") +
+geom_point(size = 3, color = "red") +
+labs(
+title = "Prevalence of Overweight or Obesity (2018–2023)",
+y = "Weighted Prevalence",
+x = "Year"
+) +
+theme_minimal(base_size = 14)
+prev_plot
+
+Save the plot
+ggsave("outputs/overweight_trend.png", plot = prev_plot, width = 7, height = 5)
+
+<br> The line chart shows a **gradual increase in the prevalence of overweight or obesity from 2018 to 2023**. The trend highlights that a growing proportion of U.S. adults fall into overweight or obese categories each year, reflecting persistent population-level risk factors related to diet, physical activity, and lifestyle. <br> <br> <br>
+
+## Conclusion
+The BRFSS-based survey-weighted analysis indicates that obesity prevalence among U.S. adults has steadily increased over the 2018–2023 period.
+Given the consistent rise, these findings emphasize the ongoing need for targeted public health interventions promoting physical activity, healthy diet, and weight management at the community level.
+<br>
+<br>
+
+## Associated scripts: `scripts/q1.R`
 
 
 # Question#2
