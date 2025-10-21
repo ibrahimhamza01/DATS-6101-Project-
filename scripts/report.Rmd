@@ -1,6 +1,6 @@
 ---
 title: "DATS 6101 Project 1"
-author: "Syed Ibrahim Hamza, Pratik Shetty"
+author: "Syed Ibrahim Hamza, Pratik Shetty, and Dominique Howell"
 date: "`r Sys.Date()`"
 output:
   html_document:
@@ -33,6 +33,8 @@ library(survey)
 library(kableExtra)
 library(stats)
 library(readr)
+library(tidyr)
+library(car)
 
 brfss = readRDS("../data/processed/brfss_2018_2023.rds")
 ```
@@ -599,8 +601,14 @@ BMI did not vary significantly across survey years (F = 1.70, p = 0.13), suggest
 This data suggests that lifestyle behaviors, particularly exercise, are key determinants of BMI and obesity. Non-exercisers consistently had higher BMI, while binge drinking had a smaller effect. Year-to-year changes were minimal, highlighting the importance of promoting physical activity to reduce obesity risk.
 
 # Question#3
-- Description of Q3
+
+## Description
+This analysis explores the association between demographic groups and obesity among U.S. adults in the post-COVID period (2021–2023) using BRFSS data. The analysis tests if there are yearly changes in body mass index (BMI) by gender and ethnicity. In addition, associations between pre-Covid and post-Covid body mass index (BMI) are examined by demographic group. 
+<br>
+
 - Summary statistics
+
+
 - Visualizations
 - Findings and interpretation
 - Associated scripts: `scripts/05_q3_equity.R`
