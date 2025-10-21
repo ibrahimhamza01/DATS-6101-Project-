@@ -4,6 +4,8 @@ library(survey)
 library(ggplot2)
 library(tidyr)
 library(ezids)
+library(car)
+
 
 setwd("C:/Users/dhowell07/Documents/DATS6101/R/Project1")
 
@@ -37,23 +39,69 @@ brfss_demo$education_level <- factor(brfss_demo$education_level, order=T,levels 
 male = subset(brfss_demo,sex %in% 'Male')
 summary(male)
 
+maleclean = outlierKD2(male, bmi, rm = TRUE, boxplt = TRUE, qqplt = TRUE)
+leveneTest(bmi~interview_year,maleclean)
+
+ggplot(maleclean, aes(x=interview_year, y=bmi,fill = interview_year)) + 
+  geom_boxplot(outlier.size=2, color ="black") +
+  labs(x="Year", y = "Body Mass Index (BMI)")+
+  ggtitle("Body Mass Index (BMI) for Males from 2018 - 2023")+
+  theme(legend.position ="none",plot.title = element_text(face = "bold",hjust=0.5))+
+  scale_fill_brewer(palette ="Set2")
+  
+
+maleclean_anova = aov(bmi ~ interview_year, data=maleclean)
+xkabledply(maleclean_anova)
+summary(maleclean_anova)
+
+tukeymaleclean<- TukeyHSD(maleclean_anova) 
+tukeymaleclean
+
+
+hist(male$bmi, main="Histogram of Male BMI", xlab="Body Mass Index (BMI)", col = 'blue' )
+library(ggplot2)
+ggplot(data=male, aes(bmi)) + 
+  geom_histogram(breaks=seq(18, 90, by = 5), 
+                 col="red", 
+                 fill="blue", 
+                 alpha = .7) + # opacity
+  labs(x="Body Mass Index (BMI)", y="Frequency") +
+  labs(title="Body Mass Index (BMI)") 
+
 library("ggplot2")
 ggplot(male, aes(x=interview_year, y=bmi)) + 
-  geom_boxplot( colour=c("#ff0000","#11cc11","#0000ff","#ff00ff","#ffa500","#551a8b"), outlier.shape=8, outlier.size=4) +
+  geom_boxplot(colour=c("#ff0000","#11cc11","#0000ff","#ff00ff","#ffa500","#551a8b"), outlier.shape=8, outlier.size=4) +
   labs(x="Year", y = "Body Mass Index (BMI)")+
   ggtitle("Body Mass Index (BMI) for Males from 2018 - 2023")+
   theme(plot.title = element_text(hjust=0.5))
 
-male_anova = aov(bmi ~ interview_year, data=male)
-xkabledply(male_anova)
-summary(male_anova)
+qqnorm(male$bmi, main="Q-Q plot of Male BMI") 
+qqline(male$bmi)
+ks.test(male$bmi,pnorm) # Kolmogorov-Smirnov Tests against normal distribution
 
-tukeymale<- TukeyHSD(male_anova) 
-tukeymale
+
+##male_anova = aov(bmi ~ interview_year, data=male)
+##xkabledply(male_anova)
+##summary(male_anova)
+
+##tukeymale<- TukeyHSD(male_anova) 
+##tukeymale
 
 ##Female##
 female = subset(brfss_demo,sex %in% 'Female')
 summary(female)
+
+library("ggplot2")
+
+hist(female$bmi, main="Histogram of Female BMI", xlab="Body Mass Index (BMI)", col = 'blue' )
+library(ggplot2)
+ggplot(data=female, aes(bmi)) + 
+  geom_histogram(breaks=seq(18, 90, by = 5), 
+                 col="red", 
+                 fill="blue", 
+                 alpha = .7) + # opacity
+  labs(x="Body Mass Index (BMI)", y="Frequency") +
+  labs(title="Body Mass Index (BMI)") 
 
 library("ggplot2")
 ggplot(female, aes(x=interview_year, y=bmi)) + 
@@ -62,12 +110,34 @@ ggplot(female, aes(x=interview_year, y=bmi)) +
   ggtitle("Body Mass Index (BMI) for Females from 2018 - 2023")+
   theme(plot.title = element_text(hjust=0.5))
 
-female_anova = aov(bmi ~ interview_year, data=female)
-xkabledply(female_anova)
-summary(female_anova)
 
-tukeyfemale<- TukeyHSD(male_anova) 
-tukeyfemale
+qqnorm(female$bmi, main="Q-Q plot of Female BMI") 
+qqline(female$bmi)
+ks.test(female$bmi,pnorm) # Kolmogorov-Smirnov Tests against normal distribution
+
+femaleclean = outlierKD2(female, bmi, rm = TRUE, boxplt = TRUE, qqplt = TRUE)
+leveneTest(bmi~interview_year,femaleclean)
+
+ggplot(femaleclean, aes(x=interview_year, y=bmi)) + 
+  geom_boxplot( colour=c("#ff0000","#11cc11","#0000ff","#ff00ff","#ffa500","#551a8b"), outlier.shape=8, outlier.size=4) +
+  labs(x="Year", y = "Body Mass Index (BMI)")+
+  ggtitle("Body Mass Index (BMI) for Females from 2018 - 2023")+
+  theme(plot.title = element_text(hjust=0.5))
+
+femaleclean_anova = aov(bmi ~ interview_year, data=femaleclean)
+xkabledply(femaleclean_anova)
+summary(femaleclean_anova)
+
+tukeyfemaleclean<- TukeyHSD(femaleclean_anova) 
+tukeyfemaleclean
+
+
+##female_anova = aov(bmi ~ interview_year, data=female)
+##xkabledply(female_anova)
+##summary(female_anova)
+
+##tukeyfemale<- TukeyHSD(male_anova) 
+##tukeyfemale
 
 ## BMI By Ethnicity ##
 
@@ -75,16 +145,33 @@ tukeyfemale
 white = subset(brfss_demo,race_ethnicity %in% 'White NH')
 summary(white)
 
+whiteclean = outlierKD2(white, bmi, rm = TRUE, boxplt = TRUE, qqplt = TRUE)
+leveneTest(bmi~interview_year,whiteclean)
+
 library("ggplot2")
-ggplot(white, aes(x=interview_year, y=bmi)) + 
-  geom_boxplot( colour=c("#ff0000","#11cc11","#0000ff","#ff00ff","#ffa500","#551a8b"), outlier.shape=8, outlier.size=4) +
+ggplot(whiteclean, aes(x=interview_year, y=bmi)) + 
+  geom_boxplot(colour=c("#ff0000","#11cc11","#0000ff","#ff00ff","#ffa500","#551a8b"), outlier.shape=8, outlier.size=4) +
   labs(x="Year", y = "Body Mass Index (BMI)")+
   ggtitle("Body Mass Index (BMI) for Whites from 2018 - 2023")+
   theme(plot.title = element_text(hjust=0.5))
 
-white_anova = aov(bmi ~ interview_year, data=white)
-xkabledply(white_anova)
-summary(white_anova)
+whiteclean_anova = aov(bmi ~ interview_year, data=whiteclean)
+xkabledply(whiteclean_anova)
+summary(whiteclean_anova)
+
+tukeywhiteclean<- TukeyHSD(whiteclean_anova) 
+tukeywhiteclean
+
+##library("ggplot2")
+##ggplot(white, aes(x=interview_year, y=bmi)) + 
+  #geom_boxplot( colour=c("#ff0000","#11cc11","#0000ff","#ff00ff","#ffa500","#551a8b"), outlier.shape=8, outlier.size=4) +
+  #labs(x="Year", y = "Body Mass Index (BMI)")+
+  #ggtitle("Body Mass Index (BMI) for Whites from 2018 - 2023")+
+  #theme(plot.title = element_text(hjust=0.5))
+
+##white_anova = aov(bmi ~ interview_year, data=white)
+##xkabledply(white_anova)
+##summary(white_anova)
 
 tukeywhite<- TukeyHSD(white_anova) 
 tukeywhite
@@ -93,37 +180,74 @@ tukeywhite
 hispanic = subset(brfss_demo,race_ethnicity %in% 'Hispanic')
 summary(hispanic)
 
+hispanicclean = outlierKD2(hispanic, bmi, rm = TRUE, boxplt = TRUE, qqplt = TRUE)
+leveneTest(bmi~interview_year,hispanicclean)
+
+
 library("ggplot2")
-ggplot(hispanic, aes(x=interview_year, y=bmi)) + 
+ggplot(hispanicclean, aes(x=interview_year, y=bmi)) + 
   geom_boxplot( colour=c("#ff0000","#11cc11","#0000ff","#ff00ff","#ffa500","#551a8b"), outlier.shape=8, outlier.size=4) +
   labs(x="Year", y = "Body Mass Index (BMI)")+
-  ggtitle("Body Mass Index (BMI) for Hispanics from 2018 - 2023")+
+  ggtitle("Body Mass Index (BMI) for Hispanic from 2018 - 2023")+
   theme(plot.title = element_text(hjust=0.5))
 
-hispanic_anova = aov(bmi ~ interview_year, data=hispanic)
-xkabledply(hispanic_anova)
-summary(hispanic_anova)
+hispanicclean_anova = aov(bmi ~ interview_year, data=hispanicclean)
+xkabledply(hispanicclean_anova)
+summary(hispanicclean_anova)
 
-tukeyhispanic<- TukeyHSD(hispanic_anova) 
-tukeyhispanic
+tukeyhispanicclean<- TukeyHSD(hispanicclean_anova) 
+tukeyhispanicclean
+
+##library("ggplot2")
+##ggplot(hispanic, aes(x=interview_year, y=bmi)) + 
+  #geom_boxplot( colour=c("#ff0000","#11cc11","#0000ff","#ff00ff","#ffa500","#551a8b"), outlier.shape=8, outlier.size=4) +
+  #labs(x="Year", y = "Body Mass Index (BMI)")+
+  #ggtitle("Body Mass Index (BMI) for Hispanics from 2018 - 2023")+
+  #theme(plot.title = element_text(hjust=0.5))
+
+##hispanic_anova = aov(bmi ~ interview_year, data=hispanic)
+##xkabledply(hispanic_anova)
+##summary(hispanic_anova)
+
+##tukeyhispanic<- TukeyHSD(hispanic_anova) 
+##tukeyhispanic
 
 ##Black##
 black = subset(brfss_demo,race_ethnicity %in% 'Black NH')
 summary(black)
 
+blackclean = outlierKD2(black, bmi, rm = TRUE, boxplt = TRUE, qqplt = TRUE)
+leveneTest(bmi~interview_year,blackclean)
+
+
 library("ggplot2")
-ggplot(black, aes(x=interview_year, y=bmi)) + 
+ggplot(blackclean, aes(x=interview_year, y=bmi)) + 
   geom_boxplot( colour=c("#ff0000","#11cc11","#0000ff","#ff00ff","#ffa500","#551a8b"), outlier.shape=8, outlier.size=4) +
   labs(x="Year", y = "Body Mass Index (BMI)")+
-  ggtitle("Body Mass Index (BMI) for Blacks from 2018 - 2023")+
+  ggtitle("Body Mass Index (BMI) for Black from 2018 - 2023")+
   theme(plot.title = element_text(hjust=0.5))
 
-black_anova = aov(bmi ~ interview_year, data=black)
-xkabledply(black_anova)
-summary(black_anova)
+blackclean_anova = aov(bmi ~ interview_year, data=blackclean)
+xkabledply(blackclean_anova)
+summary(blackclean_anova)
 
-tukeyblack<- TukeyHSD(black_anova) 
-tukeyblack
+tukeyblackclean<- TukeyHSD(blackclean_anova) 
+tukeyblackclean
+
+
+##library("ggplot2")
+##ggplot(black, aes(x=interview_year, y=bmi)) + 
+  #geom_boxplot( colour=c("#ff0000","#11cc11","#0000ff","#ff00ff","#ffa500","#551a8b"), outlier.shape=8, outlier.size=4) +
+  #labs(x="Year", y = "Body Mass Index (BMI)")+
+  #ggtitle("Body Mass Index (BMI) for Blacks from 2018 - 2023")+
+  #theme(plot.title = element_text(hjust=0.5))
+
+##black_anova = aov(bmi ~ interview_year, data=black)
+##xkabledply(black_anova)
+##summary(black_anova)
+
+##tukeyblack<- TukeyHSD(black_anova) 
+##tukeyblack
 
 ##Multiracial##
 multiracial = subset(brfss_demo,race_ethnicity %in% 'Multiracial NH')
