@@ -38,7 +38,7 @@ brfss_demo$education_level <- factor(brfss_demo$education_level, order=T,levels 
 
 
 ### Post-Covid Chi-squared Test ###
-post_covid = subset(brfss_demo,interview_year %in% c('2020','2021','2022','2023'))
+post_covid = subset(brfss_demo,interview_year %in% c('2021','2022','2023'))
 summary(post_covid)
 
 # Create Post-Covid Survey Design
@@ -46,18 +46,24 @@ post_covid_design <- svydesign(
   id = ~psu,
   weights = ~weight_final,
   strata = ~strata,
-  data = post_covid
+  data = post_covid, 
+  nest = TRUE
 )
 
 ##BMI Category vs Gender##
 sex_post_table = svytable(~bmi_category + sex,design = post_covid_design)
+sex_post_table
 sex_post_chisq = svychisq(~bmi_category + sex, design = post_covid_design, statistic = "Chisq")
 sex_post_chisq
 
 sex_post_table <- as.data.frame(sex_post_table)
 ggplot(data = sex_post_table, mapping = aes (x = sex, y = Freq, fill = bmi_category)) +
   geom_col(position="fill")+
-  coord_flip()
+  coord_flip() +
+  labs(x="Gender", y="Frequency") +
+  labs(fill = "BMI Category")+
+  ggtitle("Post-COVID BMI Category Frequency by Gender")+
+  theme(plot.title = element_text(hjust=0.5))
 
 ##BMI Category vs Age Group##
 age_post_table = svytable(~bmi_category + age_group,design = post_covid_design)
@@ -67,8 +73,12 @@ age_post_chisq
 age_post_table <- as.data.frame(age_post_table)
 ggplot(data = age_post_table, mapping = aes (x = age_group, y = Freq, fill = bmi_category)) +
   geom_col(position="fill")+
-  coord_flip()
-
+  coord_flip()+  
+  labs(x="Age Group", y="Frequency") +
+  labs(fill = "BMI Category")+
+  ggtitle("Post-COVID BMI Category Frequency by Age Group")+
+  theme(plot.title = element_text(hjust=0.5))
+  
 ##BMI Category vs Ethnicity##
 ethnicity_post_table = svytable(~bmi_category + race_ethnicity,design = post_covid_design)
 ethnicity_post_chisq = svychisq(~bmi_category + race_ethnicity, design = post_covid_design, statistic = "Chisq")
@@ -77,7 +87,11 @@ ethnicity_post_chisq
 ethnicity_post_table <- as.data.frame(ethnicity_post_table)
 ggplot(data = ethnicity_post_table, mapping = aes (x = race_ethnicity, y = Freq, fill = bmi_category)) +
   geom_col(position="fill")+
-  coord_flip()
+  coord_flip()+
+  labs(x="Ethnicity", y="Frequency") +
+  labs(fill = "BMI Category")+
+  ggtitle("Post-COVID BMI Category Frequency by Ethnicity")+
+  theme(plot.title = element_text(hjust=0.5))
 
 ##BMI Category vs Education Level##
 education_post_table = svytable(~bmi_category + education_level,design = post_covid_design)
@@ -87,20 +101,24 @@ education_post_chisq
 education_post_table <- as.data.frame(education_post_table)
 ggplot(data = education_post_table, mapping = aes (x = education_level, y = Freq, fill = bmi_category)) +
   geom_col(position="fill")+
-  coord_flip()
-
+  coord_flip()+
+  labs(x="Education Level", y="Frequency") +
+  labs(fill = "BMI Category")+
+  ggtitle("Post-COVID BMI Category Frequency by Education Level")+
+  theme(plot.title = element_text(hjust=0.5))
 
 ### Pre-Covid Chi-squared Test ###
-pre_covid = subset(brfss_demo,interview_year %in% c('2018','2019'))
+pre_covid = subset(brfss_demo,interview_year %in% c('2018','2019','2020'))
 summary(pre_covid)
 
 
 # Create Pre-Covid Survey Design
 pre_covid_design <- svydesign(
   id = ~psu,
-  strata = ~strata,
   weights = ~weight_final,
-  data = pre_covid
+  strata = ~strata,
+  data = pre_covid,
+  nest = TRUE
 )
 
 ##BMI Category vs Gender##
@@ -111,7 +129,11 @@ sex_pre_chisq
 sex_pre_table <- as.data.frame(sex_pre_table)
 ggplot(data = sex_pre_table, mapping = aes (x = sex, y = Freq, fill = bmi_category)) +
   geom_col(position="fill")+
-  coord_flip()
+  coord_flip()+
+  labs(x="Gender", y="Frequency") +
+  labs(fill = "BMI Category")+
+  ggtitle("Pre-COVID BMI Category Frequency by Gender")+
+  theme(plot.title = element_text(hjust=0.5))
 
 ##BMI Category vs Age Group##
 age_pre_table = svytable(~bmi_category + age_group,design = pre_covid_design)
@@ -121,7 +143,11 @@ age_pre_chisq
 age_pre_table <- as.data.frame(age_pre_table)
 ggplot(data = age_pre_table, mapping = aes (x = age_group, y = Freq, fill = bmi_category)) +
   geom_col(position="fill")+
-  coord_flip()
+  coord_flip()+
+  labs(x="Age Group", y="Frequency") +
+  labs(fill = "BMI Category")+
+  ggtitle("Pre-COVID BMI Category Frequency by Age Group")+
+  theme(plot.title = element_text(hjust=0.5))
 
 ##BMI Category vs Ethnicity##
 ethnicity_pre_table = svytable(~bmi_category + race_ethnicity,design = pre_covid_design)
@@ -131,7 +157,11 @@ ethnicity_pre_chisq
 ethnicity_pre_table <- as.data.frame(ethnicity_pre_table)
 ggplot(data = ethnicity_pre_table, mapping = aes (x = race_ethnicity, y = Freq, fill = bmi_category)) +
   geom_col(position="fill")+
-  coord_flip()
+  coord_flip()+
+  labs(x="Ethnicity", y="Frequency") +
+  labs(fill = "BMI Category")+
+  ggtitle("Pre-COVID BMI Category Frequency by Ethnicity")+
+  theme(plot.title = element_text(hjust=0.5))
 
 ##BMI Category vs Education Level##
 education_pre_table = svytable(~bmi_category + education_level,design = pre_covid_design)
@@ -141,14 +171,8 @@ education_pre_chisq
 education_pre_table <- as.data.frame(education_pre_table)
 ggplot(data = education_pre_table, mapping = aes (x = education_level, y = Freq, fill = bmi_category)) +
   geom_col(position="fill")+
-  coord_flip()
-
-
-# Step 8: Save weighted prevalence table with p-values to CSV
-##if(!dir.exists("outputs")){
-##  dir.create("outputs")
-##}
-
-##write.csv(chronic_by_obese, "outputs/chronic_by_obese.csv", row.names = FALSE)
-
-
+  coord_flip()+
+  labs(x="Education Level", y="Frequency") +
+  labs(fill = "BMI Category")+
+  ggtitle("Pre-COVID BMI Category Frequency by Education Level")+
+  theme(plot.title = element_text(hjust=0.5))
