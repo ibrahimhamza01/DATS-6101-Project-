@@ -39,6 +39,17 @@ library(car)
 brfss = readRDS("../data/processed/brfss_2018_2023.rds")
 ```
 
+```{r, message=FALSE, warning=FALSE, echo=FALSE}
+# Function to create a small stratified sample by year
+create_small_brfss <- function(data, year_col = "interview_year", n_per_year = 2000, seed = 2025) {
+  set.seed(seed)  # for reproducibility
+  data %>%
+    group_by(.data[[year_col]]) %>%
+    slice_sample(n = n_per_year) %>%
+    ungroup()
+}
+```
+
 # Introduction
 
 ## Project Overview
@@ -229,7 +240,8 @@ library(dplyr)
 library(survey)
 library(ggplot2)
 
-brfss_all <- readRDS("C:/Users/namitha/Downloads/brfss_2018_2023.rds")
+ 
+brfss_all <- create_small_brfss(readRDS('../data/processed/brfss_2018_2023.rds'), year_col = "interview_year", n_per_year = 2000)
 
 glimpse(brfss_all)
 table(brfss_all$interview_year)
@@ -613,9 +625,8 @@ This analysis explores the association between demographic groups and obesity am
 <br>
 
 ```{r reload_data, message=FALSE, warning=FALSE, echo=FALSE}
-setwd("C:/Users/dhowell07/Documents/DATS6101/R/Project1")
 
-brfss = read.csv("brfss_2018_2023.csv", header=T)
+brfss = create_small_brfss(readRDS('../data/processed/brfss_2018_2023.rds'), year_col = "interview_year", n_per_year = 2000)
 ```
 
 ```{r demo_data, message=FALSE, warning=FALSE, echo=FALSE}
@@ -746,7 +757,6 @@ The p-value is 0.72, the null hypothesis that the mean BMI are to same for hispa
 <br>
 <br>
 
-```
 From the Tukey-Kramer test, it is observed that the no p-values are less than 0.05.
 <br>
 <br>
@@ -831,7 +841,7 @@ library(ggplot2)
 library(tidyr)
 library(scales)
 
-brfss_data <- readRDS("C:/Users/namitha/Downloads/brfss_2018_2023.rds")
+brfss_data <- create_small_brfss(readRDS('../data/processed/brfss_2018_2023.rds'), year_col = "interview_year", n_per_year = 2000)
 
 # Filter data for post-COVID years and create indicator variables
 brfss_postcovid <- brfss_data %>%
@@ -926,7 +936,7 @@ library(ggplot2)
 library(tidyr)
 library(scales)
 
-brfss_data <- readRDS("C:/Users/namitha/Downloads/brfss_2018_2023.rds")
+brfss_data <- create_small_brfss(readRDS('../data/processed/brfss_2018_2023.rds'), year_col = "interview_year", n_per_year = 2000)
 
 brfss_postcovid <- brfss_data %>%
   filter(interview_year >= 2021) %>%
