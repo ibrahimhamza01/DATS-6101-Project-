@@ -861,13 +861,9 @@ Taken together, Q1 to Q4 present a clear picture: obesity prevalence has risen s
 
 ## References
 
-
 <br>
 - Centers for Disease Control and Prevention. (2023). *BRFSS overview.* https://www.cdc.gov/brfss/annual_data/2023/pdf/Overview_2023-508.pdf  
 - Centers for Disease Control and Prevention. (2021). *Behavioral Risk Factor Surveillance System comparability of data BRFSS 2020.* https://www.cdc.gov/brfss/annual_data/2020/pdf/compare-2020-508.pdf
 <br><br><br>
 
-## Appendix
-```{r, echo=TRUE}
-# Example: code snippets for reproducibility
-```
+
