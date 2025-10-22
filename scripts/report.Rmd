@@ -606,6 +606,222 @@ This data suggests that lifestyle behaviors, particularly exercise, are key dete
 This analysis explores the association between demographic groups and obesity among U.S. adults in the post-COVID period (2021–2023) using BRFSS data. The analysis tests if there are yearly changes in body mass index (BMI) by gender and ethnicity. In addition, associations between pre-Covid and post-Covid body mass index (BMI) are examined by demographic group. 
 <br>
 
+# Question#3
+
+## Description
+This analysis explores the association between demographic groups and obesity among U.S. adults in the post-COVID period (2021–2023) using BRFSS data. The analysis tests if there are yearly changes in body mass index (BMI) by gender and ethnicity. In addition, associations between pre-Covid and post-Covid body mass index (BMI) are examined by demographic group. 
+<br>
+
+```{r reload_data, message=FALSE, warning=FALSE, echo=FALSE}
+setwd("C:/Users/dhowell07/Documents/DATS6101/R/Project1")
+
+brfss = read.csv("brfss_2018_2023.csv", header=T)
+```
+
+```{r demo_data, message=FALSE, warning=FALSE, echo=FALSE}
+##Make a data set that includes only demographic data and change categorical data from character to factor class. Also, add order to interview year, BMI category, age group, and education level
+brfss_demo = brfss[,c(1:6,7,12,14:18)]
+brfss_demo$psu = as.factor(brfss_demo$psu)
+brfss_demo$psu <- factor(brfss_demo$psu)
+brfss_demo$interview_year = as.factor(brfss_demo$interview_year)
+brfss_demo$interview_year <- factor(brfss_demo$interview_year, order=T,levels = c("2018","2019","2020","2021","2022","2023"))
+brfss_demo$bmi_category = as.factor(brfss_demo$bmi_category)
+brfss_demo$bmi_category <- factor(brfss_demo$bmi_category, order=T,levels = c("Underweight","Normal weight","Overweight","Obese"))
+brfss_demo$overweight_or_obese = as.factor(brfss_demo$overweight_or_obese)
+brfss_demo$overweight_or_obese <- factor(brfss_demo$overweight_or_obese, order=T,levels = c("Yes","No"))
+brfss_demo$sex = as.factor(brfss_demo$sex)
+brfss_demo$sex <- factor(brfss_demo$sex, order=F)
+brfss_demo$age_group = as.factor(brfss_demo$age_group)
+brfss_demo$age_group <- factor(brfss_demo$age_group, order=T,levels = c("18-24","25-29","30-34","35-39","40-44","45-49","50-54","55-59","60-64","65-69","70-74","75-79","80 or older"))
+brfss_demo$race_ethnicity = as.factor(brfss_demo$race_ethnicity)
+brfss_demo$race_ethnicity <- factor(brfss_demo$race_ethnicity, order=F)
+brfss_demo$education_level = as.factor(brfss_demo$education_level)
+brfss_demo$education_level <- factor(brfss_demo$education_level, order=T,levels = c("No school/K","Grades 1-8","Grades 9-11","Grade 12/GED","College 1-3 years","College 4+ years"))
+```
+
+## Summary Statistics: ANOVA
+ANOVA was used to tests if there was a difference in the yearly body mass index (BMI) by gender and ethnicity. This will give insight on if based on gender and ethnicity there are changes in obesity from 2018 -2023. 
+<br>
+<br>
+<u>BMI by Gender</u>
+Male:
+```{r male_data, message=FALSE, warning=FALSE, echo=FALSE}
+##Male##
+male = subset(brfss_demo,sex %in% 'Male')
+```
+First, an outlier check is done to observe if the male dataset meets the ANOVA assumptions (normality, homogeneity of variances, and independence).
+
+```{r maleclean_data, message=FALSE, warning=FALSE}
+maleclean = outlierKD2(male, bmi, rm = TRUE, boxplt = TRUE, qqplt = TRUE)
+```
+The results show that the male dataset does not meet the assumption of normality. A dataset without outliers is used, resulting in about 3% of males being removed. The Levene's test for homegeneity of variance was done on the male dataset with the outliers removed and it the assumption was met. 
+
+```{r malecleanlevene_data, message=FALSE, warning=FALSE}
+leveneTest(bmi~interview_year,maleclean)
+```
+The same test were done for the female dataset and datasets for each ethnicity group. It was found that with outliers removed, the ANOVA assumptions were met. 
+<br>
+<br>
+An ANOVA test can be run to test if the mean BMI is the same for males for each year.
+```{r malecleananova_data, message=FALSE, warning=FALSE}
+maleclean_anova = aov(bmi ~ interview_year, data=maleclean)
+xkabledply(maleclean_anova)
+summary(maleclean_anova)
+```
+The p-value is 0.0066, the null hypothesis that the mean BMI are to same for males is rejected. 
+<br>
+<br>
+Next, the Tukey-Kramer test is done to identify years where the mean BMI difference is found
+```{r malecleantukey_data, message=FALSE, warning=FALSE}
+tukeymaleclean<- TukeyHSD(maleclean_anova) 
+tukeymaleclean
+```
+From the Tukey-Kramer test, it is observed that the p-values are less than 0.05 when comparing years 2021 & 2019 and years 2022 & 2019. 
+<br>
+<br>
+Female:
+```{r femaleclean_data, message=FALSE, warning=FALSE, echo=FALSE, results='hide',fig.show='hide'}
+female = subset(brfss_demo,sex %in% 'Female')
+femaleclean = outlierKD2(female, bmi, rm = TRUE, boxplt = TRUE, qqplt = TRUE)
+leveneTest(bmi~interview_year,femaleclean)
+```
+An ANOVA test can be run to test if the mean BMI is the same for females for each year.
+```{r femalecleananova_data, message=FALSE, warning=FALSE}
+femaleclean_anova = aov(bmi ~ interview_year, data=femaleclean)
+xkabledply(femaleclean_anova)
+summary(femaleclean_anova)
+```
+The p-value is 3.51e -08, the null hypothesis that the mean BMI are to same for females is rejected. 
+<br>
+<br>
+Next, the Tukey-Kramer test is done to identify years where the mean BMI difference is found for females.
+```{r femalecleantukey_data, message=FALSE, warning=FALSE}
+tukeyfemaleclean<- TukeyHSD(femaleclean_anova) 
+tukeyfemaleclean
+```
+From the Tukey-Kramer test, it is observed that the p-values are less than 0.05 when comparing years 2021 & 2019 and years 2022 & 2019 for females.
+<br>
+<br>
+<u>BMI by Ethnicity</u>
+<br>
+<br>
+White:
+```{r whiteclean_data, message=FALSE, warning=FALSE, echo=FALSE, results='hide',fig.show='hide'}
+white = subset(brfss_demo,race_ethnicity %in% 'White NH')
+summary(white)
+whiteclean = outlierKD2(white, bmi, rm = TRUE, boxplt = TRUE, qqplt = TRUE)
+leveneTest(bmi~interview_year,whiteclean)
+```
+An ANOVA test can be run to test if the mean BMI is the same for people of white ethnicity for each year.
+```{r whitecleananova_data, message=FALSE, warning=FALSE}
+whiteclean_anova = aov(bmi ~ interview_year, data=whiteclean)
+xkabledply(whiteclean_anova)
+summary(whiteclean_anova)
+```
+The p-value is 1.71e -09, the null hypothesis that the mean BMI are to same for whites is rejected. 
+<br>
+<br>
+Next, the Tukey-Kramer test is done to identify years where the mean BMI difference is found for whites
+```{r whitecleantukey_data, message=FALSE, warning=FALSE}
+tukeywhiteclean<- TukeyHSD(whiteclean_anova) 
+tukeywhiteclean
+```
+From the Tukey-Kramer test, it is observed that the p-values are less than 0.05 when comparing years 2018 & 2022, 2019 & 2021, 2019 & 2022, and 2019 & 2023.
+<br>
+<br>
+Hispanic:
+```{r hispanicclean_data, message=FALSE, warning=FALSE, echo=FALSE, results='hide',fig.show='hide'}
+hispanic = subset(brfss_demo,race_ethnicity %in% 'Hispanic')
+summary(hispanic)
+hispanicclean = outlierKD2(hispanic, bmi, rm = TRUE, boxplt = TRUE, qqplt = TRUE)
+leveneTest(bmi~interview_year,hispanicclean)
+```
+An ANOVA test can be run to test if the mean BMI is the same for people of hispanic ethnicity for each year.
+```{r hispaniccleananova_data, message=FALSE, warning=FALSE}
+hispanicclean_anova = aov(bmi ~ interview_year, data=hispanicclean)
+xkabledply(hispanicclean_anova)
+summary(hispanicclean_anova)
+```
+The p-value is 0.72, the null hypothesis that the mean BMI are to same for hispanics fails to be rejected.Based on the p-value from the ANOVA test, a the Tukey-Kramer test does not need to be done to identify any years where there is a mean BMI difference found for hispanics. 
+<br>
+<br>
+
+```
+From the Tukey-Kramer test, it is observed that the no p-values are less than 0.05.
+<br>
+<br>
+Black:
+```{r blackclean_data, message=FALSE, warning=FALSE, echo=FALSE, results='hide',fig.show='hide'}
+black = subset(brfss_demo,race_ethnicity %in% 'Black NH')
+summary(black)
+blackclean = outlierKD2(black, bmi, rm = TRUE, boxplt = TRUE, qqplt = TRUE)
+leveneTest(bmi~interview_year,blackclean)
+```
+An ANOVA test can be run to test if the mean BMI is the same for people of black ethnicity for each year.
+```{r blackcleananova_data, message=FALSE, warning=FALSE}
+blackclean_anova = aov(bmi ~ interview_year, data=blackclean)
+xkabledply(blackclean_anova)
+summary(blackclean_anova)
+```
+The p-value is 0.73, the null hypothesis that the mean BMI are to same for blacks fails to be rejected. Based on the p-value from the ANOVA test, a the Tukey-Kramer test does not need to be done to identify any years where there is a mean BMI difference found for blacks.
+
+## Visualizations: ANOVA
+<br>
+The following bollowing boxplots for male, female, and white ethnicity show that the median BMI is pretty consistent for each year for each gender and ethinicity. It can also be observed that there are more outliers for higher BMIs compared to lower BMIs. The same trend is observed in people of hispanic and black ethnicities. 
+
+```{r malecleanboxplot_data, message=FALSE, warning=FALSE}
+ggplot(maleclean, aes(x=interview_year, y=bmi,fill = interview_year)) + 
+  geom_boxplot(outlier.size=2, color ="black") +
+  labs(x="Year", y = "Body Mass Index (BMI)")+
+  ggtitle("Body Mass Index (BMI) for Males from 2018 - 2023")+
+  theme(legend.position ="none",plot.title = element_text(face = "bold",hjust=0.5))+
+  scale_fill_brewer(palette ="Set2")
+```
+```{r femalecleanboxplot_data, message=FALSE, warning=FALSE}
+ggplot(femaleclean, aes(x=interview_year, y=bmi,fill = interview_year)) + 
+  geom_boxplot(outlier.size=2, color ="black") +
+  labs(x="Year", y = "Body Mass Index (BMI)")+
+  ggtitle("Body Mass Index (BMI) for Females from 2018 - 2023")+
+  theme(legend.position ="none",plot.title = element_text(face = "bold",hjust=0.5))+
+  scale_fill_brewer(palette ="Set2")
+```
+```{r whitecleanboxplot_data, message=FALSE, warning=FALSE}
+library("ggplot2")
+ggplot(whiteclean, aes(x=interview_year, y=bmi,fill = interview_year)) + 
+  geom_boxplot(outlier.size=2, color ="black") +
+  labs(x="Year", y = "Body Mass Index (BMI)")+
+  ggtitle("Body Mass Index (BMI) for White Ethnicity from 2018 - 2023")+
+  theme(legend.position ="none",plot.title = element_text(face = "bold",hjust=0.5))+
+  scale_fill_brewer(palette ="Set2")
+```
+```{r hispaniccleanboxplot_data, message=FALSE, warning=FALSE,fig.show='hide'}
+library("ggplot2")
+ggplot(hispanicclean, aes(x=interview_year, y=bmi,fill = interview_year)) + 
+  geom_boxplot(outlier.size=2, color ="black") +
+  labs(x="Year", y = "Body Mass Index (BMI)")+
+  ggtitle("Body Mass Index (BMI) for Hispanic Ethnicity from 2018 - 2023")+
+  theme(legend.position ="none",plot.title = element_text(face = "bold",hjust=0.5))+
+  scale_fill_brewer(palette ="Set2")
+```
+```{r blackcleanboxplot_data, message=FALSE, warning=FALSE,fig.show='hide'}
+ggplot(blackclean, aes(x=interview_year, y=bmi,fill = interview_year)) + 
+  geom_boxplot(outlier.size=2, color ="black") +
+  labs(x="Year", y = "Body Mass Index (BMI)")+
+  ggtitle("Body Mass Index (BMI) for Black Ethnicity from 2018 - 2023")+
+  theme(legend.position ="none",plot.title = element_text(face = "bold",hjust=0.5))+
+  scale_fill_brewer(palette ="Set2")
+```
+## Conclusion
+
+### Gender and BMI
+Based on gender there was a significant difference found between BMI rates for males and females. The ANOVA test confirmed a significant difference with both tests for males and females resulting in a p-value less than 0.05. The Tukey-Kramer test showed that the mean difference may be between years 2019 and 2021 & 2022. This shows that there is a mean BMI difference between the years before Covid and the years following Covid for males and females.
+
+### Ethnicity and BMI
+
+Based on ethnicity there was a significant difference found between BMI rates for people of white ethnicity.The ANOVA test confirmed a significant difference resulting in a p-value less than 0.05. The Tukey-Kramer test showed that the mean difference may be between years 2018 & 2022, 2019 & 2021, 2019 & 2022, and 2019 & 2023. This shows that there is a mean BMI difference between the years before Covid and the years following Covid for people of white ethnicity. For Hispanics and Blacks, the ANOVA test did not show that there was a difference in BMI rates. This may be due to both ethinicity representing a smaller portion of the sampled group.
+
+
+
 ## Summary statistics
 
 ```{r message=FALSE, warning=FALSE}
@@ -693,9 +909,8 @@ write.csv(chronic_by_obese, "outputs/chronic_by_obese_postcovid.csv", row.names 
 
 <br> Post-COVID BRFSS data (2021–2023) reveal strong, statistically significant links between obesity and major chronic diseases, including diabetes, cardiovascular disease, stroke, and depression.
 These findings highlight obesity as a central determinant of health in the post-pandemic U.S. population and underscore the importance of targeted prevention programs, integrated chronic disease management, and behavioral health support to reduce long-term health burdens.
-<br><br>
-
-- Associated scripts: `scripts/q3_ANOVA.R`
+<br>
+<br>
 
 # Question#4
 
