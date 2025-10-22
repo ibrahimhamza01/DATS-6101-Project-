@@ -606,12 +606,96 @@ This data suggests that lifestyle behaviors, particularly exercise, are key dete
 This analysis explores the association between demographic groups and obesity among U.S. adults in the post-COVID period (2021–2023) using BRFSS data. The analysis tests if there are yearly changes in body mass index (BMI) by gender and ethnicity. In addition, associations between pre-Covid and post-Covid body mass index (BMI) are examined by demographic group. 
 <br>
 
-- Summary statistics
+## Summary statistics
 
+```{r message=FALSE, warning=FALSE}
+library(dplyr)
+library(survey)
+library(ggplot2)
+library(tidyr)
+library(scales)
 
-- Visualizations
-- Findings and interpretation
-- Associated scripts: `scripts/05_q3_equity.R`
+brfss_data <- readRDS("C:/Users/namitha/Downloads/brfss_2018_2023.rds")
+
+# Filter data for post-COVID years and create indicator variables
+brfss_postcovid <- brfss_data %>%
+  filter(interview_year >= 2021) %>%
+  mutate(
+    obese = ifelse(bmi_category == "Obese", 1, 0),
+    diabetes = ifelse(diabetes_status %in% c("Yes", "Yes, only pregnancy"), 1, 0),
+    cardio = ifelse(heart_attack_history == "Yes" | coronary_hd_history == "Yes", 1, 0),
+    stroke = ifelse(stroke_history == "Yes", 1, 0),
+    depression = ifelse(depression_history == "Yes", 1, 0)
+  )
+
+# Define complex survey design
+options(survey.lonely.psu = "adjust")
+brfss_design <- svydesign(
+  id = ~psu,
+  strata = ~strata,
+  weights = ~weight_final,
+  data = brfss_postcovid,
+  nest = TRUE
+)
+
+# Weighted prevalence function
+weighted_prev <- function(var) {
+  svyby(as.formula(paste0("~", var)), ~obese, brfss_design, svymean, na.rm = TRUE)
+}
+
+# Calculate weighted prevalence and chi-square tests
+diabetes_prev <- weighted_prev("diabetes")
+cardio_prev <- weighted_prev("cardio")
+stroke_prev <- weighted_prev("stroke")
+depression_prev <- weighted_prev("depression")
+
+diabetes_chisq <- svychisq(~diabetes + obese, design = brfss_design)
+cardio_chisq <- svychisq(~cardio + obese, design = brfss_design)
+stroke_chisq <- svychisq(~stroke + obese, design = brfss_design)
+depression_chisq <- svychisq(~depression + obese, design = brfss_design)
+
+# Combine results into one table
+chronic_by_obese <- data.frame(
+  Condition = c("Diabetes", "Cardiovascular Disease", "Stroke", "Depression"),
+  Non_Obese = c(diabetes_prev[1, 2], cardio_prev[1, 2], stroke_prev[1, 2], depression_prev[1, 2]),
+  Obese = c(diabetes_prev[2, 2], cardio_prev[2, 2], stroke_prev[2, 2], depression_prev[2, 2]),
+  P_Value = c(diabetes_chisq$p.value, cardio_chisq$p.value, stroke_chisq$p.value, depression_chisq$p.value)
+)
+
+knitr::kable(chronic_by_obese, caption = 'Weighted Prevalence of Chronic Conditions by Obesity Status (Post-COVID: 2021–2023)')
+```
+<br> Across post-COVID years (2021–2023), adults with **obesity** show markedly **higher prevalence** of all major chronic conditions compared to non-obese adults. - **Diabetes** and **cardiovascular disease** display the largest differences, with obese individuals reporting more than double the prevalence rates. - **Chi-square tests** indicate statistically significant associations (*p* < 0.001) for all conditions, confirming that obesity is a strong risk factor for chronic morbidity. <br><br><br>
+
+## Visualizations
+```{r message=FALSE, warning=FALSE}
+chronic_long <- chronic_by_obese %>%
+pivot_longer(cols = c("Non_Obese", "Obese"), names_to = "Obesity_Status", values_to = "Prevalence")
+
+ggplot(chronic_long, aes(x = Condition, y = Prevalence, fill = Obesity_Status)) +
+geom_bar(stat = "identity", position = "dodge") +
+scale_y_continuous(labels = percent_format(accuracy = 1)) +
+labs(
+title = "Weighted Prevalence of Chronic Conditions by Obesity Status (Post-COVID: 2021–2023)",
+x = "Chronic Condition",
+y = "Weighted Prevalence (%)",
+fill = "Obesity Status"
+) +
+theme_minimal(base_size = 13) +
+theme(axis.text.x = element_text(angle = 20, hjust = 1))
+
+if (!dir.exists("outputs")) dir.create("outputs")
+write.csv(chronic_by_obese, "outputs/chronic_by_obese_postcovid.csv", row.names = FALSE)
+
+```
+<br> The bar chart shows a clear pattern: **obese adults experience higher prevalence** across all chronic health outcomes. - **Diabetes** and **cardiovascular disease** stand out as the most obesity-linked conditions. - **Depression** also shows elevated prevalence among obese adults, emphasizing the mental–physical health connection in the post-pandemic period. <br><br><br>
+
+## Findings and interpretation
+
+<br> Post-COVID BRFSS data (2021–2023) reveal strong, statistically significant links between obesity and major chronic diseases, including diabetes, cardiovascular disease, stroke, and depression.
+These findings highlight obesity as a central determinant of health in the post-pandemic U.S. population and underscore the importance of targeted prevention programs, integrated chronic disease management, and behavioral health support to reduce long-term health burdens.
+<br><br>
+
+- Associated scripts: `scripts/q3_ANOVA.R`
 
 # Question#4
 
@@ -708,7 +792,7 @@ write.csv(chronic_by_obese, "outputs/chronic_by_obese_postcovid.csv", row.names 
 
 ## Conclusion
 
-Post-COVID BRFSS data (2021–2023) reveal that obesity is significantly associated with increased prevalence of chronic diseases such as diabetes, cardiovascular disease, stroke, and depression. The results underline the public health importance of continued obesity prevention and chronic disease management initiatives in the U.S.
+<br> Post-COVID BRFSS data (2021–2023) reveal that obesity is significantly associated with increased prevalence of chronic diseases such as diabetes, cardiovascular disease, stroke, and depression. The results underline the public health importance of continued obesity prevention and chronic disease management initiatives in the U.S.
 
 <br><br>
 
@@ -728,17 +812,62 @@ Finally, **Q4** connects chronic disease outcomes, showing that people with obes
 Taken together, Q1 to Q4 present a clear picture: obesity prevalence has risen steadily, disparities exist across demographic groups, and this condition leads to significant health risks. These insights emphasize the urgent need for combined policy measures that focus on prevention, early screening, and community-based efforts to tackle obesity as a key factor affecting public health in the U.S.
 <br><br><br>
 
-- Strengths and limitations
-- Potential additional information
+## Strengths and limitations
 
-# Conclusion
-- Overall answers to research questions
-- Future work
+<br>
+**Strengths:**
 
-# References
-- APA style references
+- **Large, nationally representative dataset:** The BRFSS surveys over 400,000 U.S. adults annually, providing strong statistical power and generalizability.  
+- **Longitudinal coverage:** Data from 2018–2023 allows assessment of trends before and after the COVID-19 pandemic.  
+- **Complex survey design accounted for:** Weighting, stratification, and clustering ensure accurate population-level estimates.  
+- **Comprehensive variables:** Includes demographics, lifestyle behaviors, and chronic conditions, enabling multifactorial analyses.  
 
-# Appendix
+**Limitations:**
+
+- **Self-reported data:** Height, weight, exercise, and alcohol use may be under- or over-reported, introducing measurement bias.  
+- **Cross-sectional design:** Cannot establish causal relationships, only associations.  
+- **Potential nonresponse bias:** Certain populations (e.g., institutionalized adults, those without phone access) may be underrepresented.  
+- **Missing or implausible values:** Filtering reduces sample size and may slightly affect generalizability.  
+<br><br><br>
+
+## Potential additional information
+
+<br>
+- Incorporation of dietary intake or more detailed physical activity measures could improve understanding of obesity determinants.  
+- Linking to medical records or longitudinal cohorts could help establish causal pathways.  
+- Geospatial analysis by state or region may reveal local patterns and policy-relevant insights.  
+
+<br><br><br>
+
+## Conclusion
+
+<br>
+**Overall Answers to Research Questions:**
+
+- **Obesity trends (Q1):** Weighted prevalence of overweight and obesity steadily increased from 2018 to 2023, indicating a persistent public health concern.  
+- **Lifestyle behaviors (Q2):** Exercise significantly reduces BMI and obesity risk, whereas binge drinking has a smaller but measurable effect.  
+- **Demographic disparities (Q3):** Obesity and BMI patterns differ by sex, age, and race/ethnicity, showing population-level disparities.  
+- **Chronic conditions (Q4):** Obesity is strongly associated with higher prevalence of diabetes, cardiovascular disease, stroke, and depression in the post-COVID period.  
+
+**Future Work:**
+
+- Explore causal relationships using longitudinal or intervention data.  
+- Investigate interactions between diet, exercise, and socioeconomic factors in predicting obesity.  
+- Assess the impact of COVID-19 on lifestyle behaviors more closely with finer temporal resolution.  
+- Develop predictive models for high-risk populations to inform targeted interventions.  
+
+---
+<br><br><br>
+
+## References
+
+
+<br>
+- Centers for Disease Control and Prevention. (2023). *BRFSS overview.* https://www.cdc.gov/brfss/annual_data/2023/pdf/Overview_2023-508.pdf  
+- Centers for Disease Control and Prevention. (2021). *Behavioral Risk Factor Surveillance System comparability of data BRFSS 2020.* https://www.cdc.gov/brfss/annual_data/2020/pdf/compare-2020-508.pdf
+<br><br><br>
+
+## Appendix
 ```{r, echo=TRUE}
 # Example: code snippets for reproducibility
 ```
