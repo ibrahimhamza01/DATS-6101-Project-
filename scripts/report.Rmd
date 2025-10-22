@@ -830,6 +830,208 @@ Based on gender there was a significant difference found between BMI rates for m
 
 Based on ethnicity there was a significant difference found between BMI rates for people of white ethnicity.The ANOVA test confirmed a significant difference resulting in a p-value less than 0.05. The Tukey-Kramer test showed that the mean difference may be between years 2018 & 2022, 2019 & 2021, 2019 & 2022, and 2019 & 2023. This shows that there is a mean BMI difference between the years before Covid and the years following Covid for people of white ethnicity. For Hispanics and Blacks, the ANOVA test did not show that there was a difference in BMI rates. This may be due to both ethinicity representing a smaller portion of the sampled group.
 
+## Summary Statistics: Chi-Squared
+The Chi-squared test was used to tests if there was a relationship between the demographic variables and body mass index (BMI) for pre- and post-COVID. This will give insight on if on gender, age group, ethnicity, and education are independent on BMI categories obesity for pre- and post-COVID. 
+<br>
+<br>
+Based on the following Chi-squared test comparing the relationship with each demographic group (gender, age group, ethnicity, and education level)
+
+
+```{r post_data, message=FALSE, warning=FALSE, echo=FALSE}
+## Post-Covid Chi-squared Test
+post_covid = subset(brfss_demo,interview_year %in% c('2021','2022','2023'))
+summary(post_covid)
+post_covid_design <- svydesign(
+  id = ~psu,
+  weights = ~weight_final,
+  strata = ~strata,
+  data = post_covid, 
+  nest = TRUE
+)
+```
+
+```{r pre_data, message=FALSE, warning=FALSE, echo=FALSE}
+### Pre-Covid Chi-squared Test ###
+pre_covid = subset(brfss_demo,interview_year %in% c('2018','2019','2020'))
+summary(pre_covid)
+pre_covid_design <- svydesign(
+  id = ~psu,
+  weights = ~weight_final,
+  strata = ~strata,
+  data = pre_covid,
+  nest = TRUE
+)
+```
+
+u>BMI and Gender</u>
+
+```{r gender_post_chisq, message=FALSE, warning=FALSE}
+sex_post_table = svytable(~bmi_category + sex,design = post_covid_design)
+sex_post_table
+sex_post_chisq = svychisq(~bmi_category + sex, design = post_covid_design, statistic = "Chisq")
+sex_post_chisq
+```
+
+```{r gender_pre_chisq, message=FALSE, warning=FALSE}
+sex_pre_table = svytable(~bmi_category + sex,design = pre_covid_design)
+sex_pre_chisq = svychisq(~bmi_category + sex, design = pre_covid_design, statistic = "Chisq")
+sex_pre_chisq
+```
+<br>
+<br>
+u>BMI and Age Group</u>
+```{r age_post_chisq, message=FALSE, warning=FALSE}
+age_post_table = svytable(~bmi_category + age_group,design = post_covid_design)
+age_post_chisq = svychisq(~bmi_category + age_group, design = post_covid_design, statistic = "Chisq")
+age_post_chisq
+```
+
+```{r age_pre_chisq, message=FALSE, warning=FALSE}
+age_pre_table = svytable(~bmi_category + age_group,design = pre_covid_design)
+age_pre_chisq = svychisq(~bmi_category + age_group, design = pre_covid_design, statistic = "Chisq")
+age_pre_chisq
+```
+<br>
+<br>
+<u>BMI and Ethnicity</u>
+<br>
+<br>
+```{r ethnicity_post_chisq, message=FALSE, warning=FALSE}
+ethnicity_post_table = svytable(~bmi_category + race_ethnicity,design = post_covid_design)
+ethnicity_post_chisq = svychisq(~bmi_category + race_ethnicity, design = post_covid_design, statistic = "Chisq")
+ethnicity_post_chisq
+```
+```{r ethnicity_pre_chisq, message=FALSE, warning=FALSE}
+ethnicity_pre_table = svytable(~bmi_category + race_ethnicity,design = pre_covid_design)
+ethnicity_pre_chisq = svychisq(~bmi_category + race_ethnicity, design = pre_covid_design, statistic = "Chisq")
+ethnicity_pre_chisq
+```
+<br>
+<br>
+<u>BMI and Education</u>
+<br>
+<br>
+```{r education_post_chisq, message=FALSE, warning=FALSE}
+education_post_table = svytable(~bmi_category + education_level,design = post_covid_design)
+education_post_chisq = svychisq(~bmi_category + education_level, design = post_covid_design, statistic = "Chisq")
+education_post_chisq
+```
+```{r education_pre_chisq, message=FALSE, warning=FALSE}
+education_pre_table = svytable(~bmi_category + education_level,design = pre_covid_design)
+education_pre_chisq = svychisq(~bmi_category + education_level, design = pre_covid_design, statistic = "Chisq")
+education_pre_chisq
+```
+
+## Visualizations: Chi-Squared
+<br>
+<u>BMI and Gender</u>
+<br>
+```{r gender_post_freqgraph, message=FALSE, warning=FALSE}
+sex_post_table <- as.data.frame(sex_post_table)
+ggplot(data = sex_post_table, mapping = aes (x = sex, y = Freq, fill = bmi_category)) +
+  geom_col(position="fill")+
+  coord_flip() +
+  labs(x="Gender", y="Frequency") +
+  labs(fill = "BMI Category")+
+  ggtitle("Post-COVID BMI Category Frequency by Gender")+
+  theme(plot.title = element_text(hjust=0.5))
+```
+```{r gender_pre_freqgraph, message=FALSE, warning=FALSE}
+sex_pre_table <- as.data.frame(sex_pre_table)
+ggplot(data = sex_pre_table, mapping = aes (x = sex, y = Freq, fill = bmi_category)) +
+  geom_col(position="fill")+
+  coord_flip()+
+  labs(x="Gender", y="Frequency") +
+  labs(fill = "BMI Category")+
+  ggtitle("Pre-COVID BMI Category Frequency by Gender")+
+  theme(plot.title = element_text(hjust=0.5))
+```
+<br>
+<br>
+<u>BMI and Age Group</u>
+<br>
+<br>
+```{r age_post_freqgraph, message=FALSE, warning=FALSE}
+age_post_table <- as.data.frame(age_post_table)
+ggplot(data = age_post_table, mapping = aes (x = age_group, y = Freq, fill = bmi_category)) +
+  geom_col(position="fill")+
+  coord_flip()+  
+  labs(x="Age Group", y="Frequency") +
+  labs(fill = "BMI Category")+
+  ggtitle("Post-COVID BMI Category Frequency by Age Group")+
+  theme(plot.title = element_text(hjust=0.5))
+```
+```{r age_pre_freqgraph, message=FALSE, warning=FALSE}
+age_pre_table <- as.data.frame(age_pre_table)
+ggplot(data = age_pre_table, mapping = aes (x = age_group, y = Freq, fill = bmi_category)) +
+  geom_col(position="fill")+
+  coord_flip()+
+  labs(x="Age Group", y="Frequency") +
+  labs(fill = "BMI Category")+
+  ggtitle("Pre-COVID BMI Category Frequency by Age Group")+
+  theme(plot.title = element_text(hjust=0.5))
+```
+<br>
+<br>
+<u>BMI and Ethnicity</u>
+<br>
+<br>
+
+```{r ethnicity_post_freqgraph, message=FALSE, warning=FALSE}
+ethnicity_post_table <- as.data.frame(ethnicity_post_table)
+ggplot(data = ethnicity_post_table, mapping = aes (x = race_ethnicity, y = Freq, fill = bmi_category)) +
+  geom_col(position="fill")+
+  coord_flip()+
+  labs(x="Ethnicity", y="Frequency") +
+  labs(fill = "BMI Category")+
+  ggtitle("Post-COVID BMI Category Frequency by Ethnicity")+
+  theme(plot.title = element_text(hjust=0.5))
+```
+
+```{r ethnicity_pre_freqgraph, message=FALSE, warning=FALSE}
+ethnicity_pre_table <- as.data.frame(ethnicity_pre_table)
+ggplot(data = ethnicity_pre_table, mapping = aes (x = race_ethnicity, y = Freq, fill = bmi_category)) +
+  geom_col(position="fill")+
+  coord_flip()+
+  labs(x="Ethnicity", y="Frequency") +
+  labs(fill = "BMI Category")+
+  ggtitle("Pre-COVID BMI Category Frequency by Ethnicity")+
+  theme(plot.title = element_text(hjust=0.5))
+```
+<br>
+<br>
+<u>BMI and Education</u>
+<br>
+<br>
+
+```{r education_post_freqgraph, message=FALSE, warning=FALSE}
+education_post_table <- as.data.frame(education_post_table)
+ggplot(data = education_post_table, mapping = aes (x = education_level, y = Freq, fill = bmi_category)) +
+  geom_col(position="fill")+
+  coord_flip()+
+  labs(x="Education Level", y="Frequency") +
+  labs(fill = "BMI Category")+
+  ggtitle("Post-COVID BMI Category Frequency by Education Level")+
+  theme(plot.title = element_text(hjust=0.5))
+```
+
+```{r eduaction_pre_freqgraph, message=FALSE, warning=FALSE}
+education_pre_table <- as.data.frame(education_pre_table)
+ggplot(data = education_pre_table, mapping = aes (x = education_level, y = Freq, fill = bmi_category)) +
+  geom_col(position="fill")+
+  coord_flip()+
+  labs(x="Education Level", y="Frequency") +
+  labs(fill = "BMI Category")+
+  ggtitle("Pre-COVID BMI Category Frequency by Education Level")+
+  theme(plot.title = element_text(hjust=0.5))
+```
+## Conclusion: Chi-Squared
+
+### Demographics and BMI
+Based on the chi-squared test, there is an relationship between each demographic group (gender, age group, ethnicity, and education level) and body mass index category. The p-value was found to be les than 2e-16 for each demographic group, showing that we could reject that null hypothesis that the demographic groups are independent of BMI, and that there is a statistically significant relationship between the demographic variables and BMI categories for pre- and post- COVID.
+<br>
+<br>
+This relationship can also be seen in the frequency for graphs for each demographic group pre- and post-COVID. It is observed that there is not much change in the frequencies when comparing the pre- and post-COVID data.
 
 
 ## Summary statistics
